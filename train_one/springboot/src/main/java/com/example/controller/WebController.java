@@ -21,7 +21,6 @@ public class WebController {
     @Resource
     UserService userService;
 
-    @AuthAccess
     @GetMapping("/")
     public Result hello() {
         return Result.success("访问成功");
