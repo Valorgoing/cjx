@@ -34,7 +34,7 @@ public class WebController {
         }
         user=userService.login(user);
         return Result.success(user);
-    }//
+    }
     @AuthAccess
     @PostMapping("/register")
     public Result register(@RequestBody User user){
