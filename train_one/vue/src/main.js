@@ -13,6 +13,8 @@ Vue.prototype.$request = request
 Vue.prototype.$baseUrl = process.env.VUE_APP_BASEURL
 
 Vue.use(ElementUI, {size: "small"})
+// 在main.js 引入css
+import 'highlight.js/styles/monokai-sublime.css'
 
 Vue.prototype.$request=request
 
