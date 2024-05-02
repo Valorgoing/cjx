@@ -6,6 +6,8 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.common.HoneyLogs;
+import com.example.common.LogType;
 import com.example.common.Result;
 import com.example.entity.User;
 import com.example.exception.ServiceException;
@@ -42,6 +44,7 @@ public class UserController {
     /**
      * 新增用户信息
      */
+    @HoneyLogs(operation = "用户" ,type= LogType.ADD)
     @PostMapping("/add")
     public Result add(@RequestBody User user) {
         try {
@@ -59,6 +62,7 @@ public class UserController {
     /**
      * 修改用户信息
      */
+    @HoneyLogs(operation = "用户" ,type= LogType.UPDATE)
     @PutMapping("/update")
     public Result update(@RequestBody User user) {
         userService.updateById(user);
@@ -68,6 +72,7 @@ public class UserController {
     /**
      * 删除用户信息
      */
+    @HoneyLogs(operation = "用户" ,type= LogType.DELETE)
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Integer id) {
         User currentUser = TokenUtils.getCurrentUser();
@@ -82,6 +87,7 @@ public class UserController {
     /**
      * 批量删除用户信息
      */
+    @HoneyLogs(operation = "用户" ,type= LogType.BATCH_DELETE)
     @DeleteMapping("/delete/batch")
     public Result batchDelete(@RequestBody List<Integer> ids) {  //  [7, 8]
         User currentUser = TokenUtils.getCurrentUser();

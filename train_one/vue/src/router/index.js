@@ -23,7 +23,8 @@ const routes = [
             {path: '/password', name: 'Password', meta: {name: '修改密码'}, component: () => import('../views/manager/Password')},
             {path: '/news', name: 'News', meta: {name: '新闻信息'}, component: () => import('../views/manager/News')},
             {path: '/newsDetail', name: 'NewsDetail', meta: {name: '新闻信息'}, component: () => import('../views/manager/NewsDetail')},
-            {path: '/notice', name: 'Notice', meta: {name: '系统公共'}, component: () => import('../views/manager/Notice')}
+            {path: '/notice', name: 'Notice', meta: {name: '系统公共'}, component: () => import('../views/manager/Notice')},
+            {path: '/logs', name: 'Logs', meta: {name: '系统日志'}, component: () => import('../views/manager/Logs')}
         ]
     },
     {path: '/login', name: 'Login', meta: {name: '登录'}, component: () => import('../views/Login.vue')},  // 确保你的路径和文件名正确

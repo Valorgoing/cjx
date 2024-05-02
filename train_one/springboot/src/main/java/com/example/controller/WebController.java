@@ -3,6 +3,8 @@ package com.example.controller;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.example.common.AuthAccess;
+import com.example.common.HoneyLogs;
+import com.example.common.LogType;
 import com.example.common.Result;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
@@ -26,6 +28,7 @@ public class WebController {
         return Result.success("访问成功");
     }
 
+    @HoneyLogs(operation = "用户" ,type= LogType.LOGIN)
     @PostMapping("/login")
     public Result login(@RequestBody User user){
         if(StrUtil.isBlank(user.getUsername())||StrUtil.isBlank(user.getPassword())){
@@ -34,6 +37,8 @@ public class WebController {
         user=userService.login(user);
         return Result.success(user);
     }//
+
+    @HoneyLogs(operation = "用户" ,type= LogType.REGISTER)
     @AuthAccess
     @PostMapping("/register")
     public Result register(@RequestBody User user){
@@ -50,6 +55,7 @@ public class WebController {
     /**
      *  Controller重置密码
      */
+    @HoneyLogs(operation = "用户" ,type= LogType.UPDATE)
     @AuthAccess
     @PutMapping("/password")
     public Result password(@RequestBody User user) {
