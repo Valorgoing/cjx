@@ -4,9 +4,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Constants;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
+import com.example.entity.Account;
 import com.example.entity.Teacher;
 import com.example.exception.CustomException;
 import com.example.mapper.TeacherMapper;
+import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -85,5 +87,32 @@ public class TeacherService {
         PageHelper.startPage(pageNum, pageSize);
         List<Teacher> list = teacherMapper.selectAll(teacher);
         return PageInfo.of(list);
+    }
+
+    public Account login(Account account) {
+        Account dbTeacher = teacherMapper.selectByUsername(account.getUsername());
+        if (ObjectUtil.isNull(dbTeacher)) {
+            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+        }
+        if (!account.getPassword().equals(dbTeacher.getPassword())) {
+            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+        }
+        // 生成token
+        String tokenData = dbTeacher.getId() + "-" + RoleEnum.TEACHER.name();
+        String token = TokenUtils.createToken(tokenData, dbTeacher.getPassword());
+        dbTeacher.setToken(token);
+        return dbTeacher;
+    }
+
+    public void updatePassword(Account account) {
+        Teacher dbTeacher = teacherMapper.selectByUsername(account.getUsername());
+        if (ObjectUtil.isNull(dbTeacher)) {
+            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
+        }
+        if (!account.getPassword().equals(dbTeacher.getPassword())) {
+            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
+        }
+        dbTeacher.setPassword(account.getNewPassword());
+        teacherMapper.updateById(dbTeacher);
     }
 }

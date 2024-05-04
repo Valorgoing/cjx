@@ -7,6 +7,8 @@ import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
 import com.example.service.AdminService;
+import com.example.service.StudentService;
+import com.example.service.TeacherService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,6 +21,12 @@ public class WebController {
 
     @Resource
     private AdminService adminService;
+
+    @Resource
+    private TeacherService teacherService;
+
+    @Resource
+    private StudentService studentService;
 
     @GetMapping("/")
     public Result hello() {
@@ -37,6 +45,12 @@ public class WebController {
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             account = adminService.login(account);
         }
+        if (RoleEnum.TEACHER.name().equals(account.getRole())) {
+            account = teacherService.login(account);
+        }
+        if (RoleEnum.STUDENT.name().equals(account.getRole())) {
+            account = studentService.login(account);
+        }
         return Result.success(account);
     }
 
@@ -52,6 +66,9 @@ public class WebController {
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             adminService.register(account);
         }
+        if (RoleEnum.STUDENT.name().equals(account.getRole())) {
+            studentService.register(account);
+        }
         return Result.success();
     }
 
@@ -66,6 +83,12 @@ public class WebController {
         }
         if (RoleEnum.ADMIN.name().equals(account.getRole())) {
             adminService.updatePassword(account);
+        }
+        if (RoleEnum.TEACHER.name().equals(account.getRole())) {
+            teacherService.updatePassword(account);
+        }
+        if (RoleEnum.STUDENT.name().equals(account.getRole())) {
+            studentService.updatePassword(account);
         }
         return Result.success();
     }
