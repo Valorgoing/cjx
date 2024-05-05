@@ -7,8 +7,8 @@
     <div style="display: flex; margin: 10px 0">
       <div style="width: 50%;" class="card">
         <div style="margin-bottom: 30px; font-size: 20px; font-weight: bold">公告列表</div>
-        <div >
-          <el-timeline  reverse slot="reference">
+        <div>
+          <el-timeline reverse slot="reference">
             <el-timeline-item v-for="item in notices" :key="item.id" :timestamp="item.time">
               <el-popover
                   placement="right"
@@ -21,23 +21,51 @@
           </el-timeline>
         </div>
       </div>
+
+      <div style="width: 50%;" class="card">
+        <div style="margin-bottom: 30px; font-size: 20px; font-weight: bold">考试安排</div>
+        <div>
+          <el-timeline reverse slot="reference">
+            <el-timeline-item v-for="item in examplans" :key="item.id" :timestamp="item.time">
+              <el-popover
+                  placement="right"
+                  width="200"
+                  trigger="hover"
+                  :content="item.content">
+                <span slot="reference">{{ item.name }}</span>
+              </el-popover>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 
+import examPlan from "@/views/manager/ExamPlan.vue";
+
 export default {
   name: 'Home',
+  // comp
   data() {
     return {
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
-      notices: []
+      notices: [],
+      examplans: []
     }
   },
   created() {
     this.$request.get('/notice/selectAll').then(res => {
       this.notices = res.data || []
+    })
+    this.$request.get('/examplan/selectAll').then(res => {
+      if (res.code === '200') {
+        this.examplans = res.data || []
+      } else {
+        this.$message.error(res.msg)
+      }
     })
   }
 }
