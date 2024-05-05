@@ -30,6 +30,7 @@ const routes = [
       { path: 'roomPlan', name: 'RoomPlan', meta: { name: '教室安排' }, component: () => import('../views/manager/RoomPlan') },
       { path: 'college', name: 'College', meta: { name: '学院信息' }, component: () => import('../views/manager/College') },
       { path: 'speciality', name: 'Speciality', meta: { name: '专业信息' }, component: () => import('../views/manager/Speciality') },
+      { path: 'classes', name: 'Classes', meta: { name: '班级信息' }, component: () => import('../views/manager/Classes') },
     ]
   },
   {
