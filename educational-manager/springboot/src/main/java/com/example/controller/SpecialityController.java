@@ -1,10 +1,8 @@
 package com.example.controller;
 
 import com.example.common.Result;
-import com.example.entity.College;
-import com.example.entity.Examplan;
-import com.example.service.CollegeService;
-import com.example.service.ExamplanService;
+import com.example.entity.Speciality;
+import com.example.service.SpecialityService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,21 +10,21 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 学院信息表前端操作接口
+ * 专业信息表前端操作接口
  **/
 @RestController
-@RequestMapping("/college")
-public class CollegeController {
+@RequestMapping("/speciality")
+public class SpecialityController {
 
     @Resource
-    private CollegeService collegeService;
+    private SpecialityService specialityService;
 
     /**
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody College college) {
-        collegeService.add(college);
+    public Result add(@RequestBody Speciality speciality) {
+        specialityService.add(speciality);
         return Result.success();
     }
 
@@ -35,7 +33,7 @@ public class CollegeController {
      */
     @DeleteMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
-        collegeService.deleteById(id);
+        specialityService.deleteById(id);
         return Result.success();
     }
 
@@ -44,7 +42,7 @@ public class CollegeController {
      */
     @DeleteMapping("/delete/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
-        collegeService.deleteBatch(ids);
+        specialityService.deleteBatch(ids);
         return Result.success();
     }
 
@@ -52,8 +50,8 @@ public class CollegeController {
      * 修改
      */
     @PutMapping("/update")
-    public Result updateById(@RequestBody College college) {
-        collegeService.updateById(college);
+    public Result updateById(@RequestBody Speciality speciality) {
+        specialityService.updateById(speciality);
         return Result.success();
     }
 
@@ -62,16 +60,16 @@ public class CollegeController {
      */
     @GetMapping("/selectById/{id}")
     public Result selectById(@PathVariable Integer id) {
-        College college = collegeService.selectById(id);
-        return Result.success(college);
+        Speciality speciality = specialityService.selectById(id);
+        return Result.success(speciality);
     }
 
     /**
      * 查询所有
      */
     @GetMapping("/selectAll")
-    public Result selectAll(College college ) {
-        List<College> list = collegeService.selectAll(college);
+    public Result selectAll(Speciality speciality ) {
+        List<Speciality> list = specialityService.selectAll(speciality);
         return Result.success(list);
     }
 
@@ -79,10 +77,10 @@ public class CollegeController {
      * 分页查询
      */
     @GetMapping("/selectPage")
-    public Result selectPage(College college,
+    public Result selectPage(Speciality speciality,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<College> page = collegeService.selectPage(college, pageNum, pageSize);
+        PageInfo<Speciality> page = specialityService.selectPage(speciality, pageNum, pageSize);
         return Result.success(page);
     }
 
