@@ -27,6 +27,7 @@ const routes = [
       { path: 'password', name: 'Password', meta: { name: '修改密码' }, component: () => import('../views/manager/Password') },
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice') },
       { path: 'examPlan', name: 'ExamPlan', meta: { name: '考试安排' }, component: () => import('../views/manager/ExamPlan') },
+      { path: 'roomPlan', name: 'RoomPlan', meta: { name: '教室安排' }, component: () => import('../views/manager/RoomPlan') },
     ]
   },
   {
