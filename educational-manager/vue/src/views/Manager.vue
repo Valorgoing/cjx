@@ -53,7 +53,13 @@
             <el-menu-item index="/college">学院信息</el-menu-item>
             <el-menu-item index="/speciality">专业信息</el-menu-item>
             <el-menu-item index="/classes">班级信息</el-menu-item>
+          </el-submenu>
+          <el-submenu index="teach">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>教学管理</span>
+            </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
+            <el-menu-item index="/choice">我的选课</el-menu-item>
           </el-submenu>
           <el-submenu index="user">
             <template slot="title">

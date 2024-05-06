@@ -32,6 +32,7 @@ const routes = [
       { path: 'speciality', name: 'Speciality', meta: { name: '专业信息' }, component: () => import('../views/manager/Speciality') },
       { path: 'classes', name: 'Classes', meta: { name: '班级信息' }, component: () => import('../views/manager/Classes') },
       { path: 'course', name: 'Course', meta: { name: '课程信息' }, component: () => import('../views/manager/Course') },
+      { path: 'choice', name: 'Choice', meta: { name: '我的选课' }, component: () => import('../views/manager/Choice') },
     ]
   },
   {
