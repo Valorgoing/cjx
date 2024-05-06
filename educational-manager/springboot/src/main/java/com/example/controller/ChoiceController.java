@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.common.Result;
 import com.example.entity.Admin;
 import com.example.entity.Choice;
+import com.example.entity.Curriculum;
 import com.example.service.AdminService;
 import com.example.service.ChoiceService;
 import com.github.pagehelper.PageInfo;
@@ -86,4 +87,9 @@ public class ChoiceController {
         return Result.success(page);
     }
 
+    @GetMapping("/getCurriculum")
+    public Result getCurriculum() {
+        List<Curriculum> list = choiceService.getCurriculum();
+        return Result.success(list);
+    }
 }
