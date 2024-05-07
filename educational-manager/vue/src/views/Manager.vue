@@ -69,6 +69,7 @@
               <i class="el-icon-menu"></i><span>教务管理</span>
             </template>
             <el-menu-item index="/apply" v-if="user.role!=='TEACHER'">请假申请</el-menu-item>
+            <el-menu-item index="/homework">作业提交</el-menu-item>
           </el-submenu>
           <el-submenu index="user">
             <template slot="title">
