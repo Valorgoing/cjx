@@ -38,6 +38,7 @@ const routes = [
       { path: 'comment', name: 'Comment', meta: { name: '网上评教' }, component: () => import('../views/manager/Comment') },
       { path: 'apply', name: 'Apply', meta: { name: '请假申请' }, component: () => import('../views/manager/Apply') },
       { path: 'homework', name: 'Homework', meta: { name: '请假申请' }, component: () => import('../views/manager/Homework') },
+      { path: 'attendance', name: 'Attendance', meta: { name: '考勤信息' }, component: () => import('../views/manager/Attendance') },
     ]
   },
   {
