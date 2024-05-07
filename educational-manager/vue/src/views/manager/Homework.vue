@@ -55,7 +55,8 @@
         </el-form-item>
         <el-form-item prop="courseId" label="选择课程">
           <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%">
-            <el-option v-for="item in courseData" :label="item.name" :value="item.courseId"></el-option>
+<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.courseId"></el-option>-->
+            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.courseId"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="作业文件">

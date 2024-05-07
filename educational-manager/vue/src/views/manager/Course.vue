@@ -25,7 +25,7 @@
         <el-table-column prop="segment" label="第几大节" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="上课状态" show-overflow-tooltip></el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="180" align="center" >
           <template v-slot="scope">
             <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini" v-if="user.role!=='STUDENT'">编辑</el-button>
             <el-button plain type="primary" @click="choiceCourse(scope.row)" size="mini" v-if="user.role === 'STUDENT'" :disabled="scope.row.status!=='未开课'">选课</el-button>
@@ -62,7 +62,8 @@
         <el-form-item prop="teacherId" label="授课教师">
           <el-select v-model="form.teacherId" placeholder="请选择教师" style="width: 100%"
                      :disabled="user.role!=='ADMIN'">
-            <el-option v-for="item in teacherData" :label="item.name" :value="item.id"></el-option>
+<!--            <el-option v-for="item in teacherData" :label="item.name" :value="item.id"></el-option>-->
+            <el-option v-for="item in teacherData" :label="item.name" :value="item.value" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="score" label="学分">

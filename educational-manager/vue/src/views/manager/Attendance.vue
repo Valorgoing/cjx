@@ -2,7 +2,8 @@
   <div>
     <div class="search">
       <el-select v-model="courseId" placeholder="请选择课程" style="width: 200px">
-        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.id"></el-option>
+<!--        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.id"></el-option>-->
+        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.value" :key="item.id"></el-option>
       </el-select>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
@@ -49,12 +50,14 @@
       <el-form label-width="100px" style="padding-right: 50px" :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="courseId" label="选择课程">
           <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%" @change="getStudent">
-            <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>
+<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>-->
+            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="studentId" label="选择学生">
           <el-select v-model="studentId" placeholder="请选择学生" style="width: 100%">
-            <el-option v-for="item in studentData" :label="item.studentName" :value="item.studentId"></el-option>
+<!--            <el-option v-for="item in studentData" :label="item.studentName" :value="item.studentId"></el-option>-->
+            <el-option v-for="item in studentData" :label="item.studentName" :value="item.value" :key="item.studentId"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="time" label="上课时间">
