@@ -4,7 +4,7 @@
     <div class="manager-header">
       <div class="manager-header-left">
         <img src="@/assets/imgs/logo.png" />
-        <div class="title">课程过程管理系统</div>
+        <div class="title" style="font-size:18px;">课程过程管理系统</div>
       </div>
 
       <div class="manager-header-center">
@@ -63,6 +63,12 @@
             <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
             <el-menu-item index="/score">我的成绩</el-menu-item>
             <el-menu-item index="/comment">网上评教</el-menu-item>
+          </el-submenu>
+          <el-submenu index="educational">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>教务管理</span>
+            </template>
+            <el-menu-item index="/apply" v-if="user.role!=='TEACHER'">请假申请</el-menu-item>
           </el-submenu>
           <el-submenu index="user">
             <template slot="title">
