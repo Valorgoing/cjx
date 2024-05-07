@@ -62,6 +62,7 @@
             <el-menu-item index="/choice">我的选课</el-menu-item>
             <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
             <el-menu-item index="/score">我的成绩</el-menu-item>
+            <el-menu-item index="/comment">网上评教</el-menu-item>
           </el-submenu>
           <el-submenu index="user">
             <template slot="title">

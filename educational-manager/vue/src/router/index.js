@@ -35,6 +35,7 @@ const routes = [
       { path: 'choice', name: 'Choice', meta: { name: '我的选课' }, component: () => import('../views/manager/Choice') },
       { path: 'curriculum', name: 'Curriculum', meta: { name: '我的课表' }, component: () => import('../views/manager/Curriculum') },
       { path: 'score', name: 'Score', meta: { name: '我的成绩' }, component: () => import('../views/manager/Score') },
+      { path: 'comment', name: 'Comment', meta: { name: '网上评教' }, component: () => import('../views/manager/Comment') },
     ]
   },
   {

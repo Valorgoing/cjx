@@ -16,6 +16,7 @@ public enum ResultCodeEnum {
     PARAM_PASSWORD_ERROR("5005", "原密码输入错误"),
     COURSE_NUM_ERROR("5006", "该门课选课人数已满，请选择其他课程"),
     SCORE_ALREADY_ERROR("5007","您已经录入了该学生该门课的成绩了"),
+    COMMENT_ALREADY_ERROR("5008","您已经对该门课的老师评教过了，请勿重复评教"),
     ;
 
     public String code;

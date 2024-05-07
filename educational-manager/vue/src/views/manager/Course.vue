@@ -28,8 +28,8 @@
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
             <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini" v-if="user.role!=='STUDENT'">编辑</el-button>
-            <el-button plain type="primary" @click="choiceCourse(scope.row)" size="mini" v-if="user.role === 'STUDENT'">选课</el-button>
-            <el-button plain type="danger" size="mini" @click=del(scope.row.id) v-if="user.role!=='ADMIN'">删除</el-button>
+            <el-button plain type="primary" @click="choiceCourse(scope.row)" size="mini" v-if="user.role === 'STUDENT'" :disabled="scope.row.status!=='未开课'">选课</el-button>
+            <el-button plain type="danger" size="mini" @click=del(scope.row.id) v-if="user.role ==='ADMIN'">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
