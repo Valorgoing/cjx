@@ -10,7 +10,7 @@
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
-    <div class="operation">
+    <div class="operation" v-if="user.role==='ADMIN'">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
