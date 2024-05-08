@@ -35,4 +35,24 @@ public class SpringAmqpTest {
             Thread.sleep(20);
         }
     }
+
+    @Test
+    public void tendSendFanoutExchange(){
+        //交换机名称
+        String exchangeName="itcast.fanout";
+        //消息
+        String message="hello,every one!";
+        //发送消息
+        rabbitTemplate.convertAndSend(exchangeName,"",message);
+    }
+
+    @Test
+    public void tendSendDirectExchange(){
+        //交换机名称
+        String exchangeName="itcast.direct";
+        //消息
+        String message="hello,yellow!";
+        //发送消息
+        rabbitTemplate.convertAndSend(exchangeName,"yellow",message);
+    }
 }
