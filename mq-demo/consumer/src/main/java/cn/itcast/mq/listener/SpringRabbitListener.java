@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by IntelliJ IDEA.
@@ -74,6 +76,11 @@ public class SpringRabbitListener {
     ))
     public void listenTopicQueue2(String msg){
         System.out.println("消费者接收到topic.queue2的消息:【"+msg+"】");
+    }
+
+    @RabbitListener(queues = "object.queue")
+    public void listenObjectQueue(Map<String, Object> msg){
+        System.out.println("接收到object.queue的消息："+msg);
     }
 }
 
