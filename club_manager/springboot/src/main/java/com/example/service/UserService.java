@@ -3,6 +3,7 @@ package com.example.service;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Constants;
+import com.example.common.enums.LevelEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
@@ -135,4 +136,8 @@ public class UserService {
         userMapper.updateById(dbUser);
     }
 
+    public List<User> getAllHeaders(User user) {
+        user.setLevel(LevelEnum.HEADER.level);
+        return userMapper.selectAll(user);
+    }
 }

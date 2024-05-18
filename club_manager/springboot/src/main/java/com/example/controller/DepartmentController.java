@@ -1,8 +1,10 @@
 package com.example.controller;
 
 import com.example.common.Result;
-import com.example.entity.User;
-import com.example.service.UserService;
+import com.example.entity.Department;
+import com.example.entity.Notice;
+import com.example.service.DepartmentService;
+import com.example.service.NoticeService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +12,21 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 用户信息表前端操作接口
+ * 社团信息表前端操作接口
  **/
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/department")
+public class DepartmentController {
 
     @Resource
-    private UserService userService;
+    private DepartmentService departmentService;
 
     /**
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody User user) {
-        userService.add(user);
+    public Result add(@RequestBody Department department) {
+        departmentService.add(department);
         return Result.success();
     }
 
@@ -33,7 +35,7 @@ public class UserController {
      */
     @DeleteMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
-        userService.deleteById(id);
+        departmentService.deleteById(id);
         return Result.success();
     }
 
@@ -42,7 +44,7 @@ public class UserController {
      */
     @DeleteMapping("/delete/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
-        userService.deleteBatch(ids);
+        departmentService.deleteBatch(ids);
         return Result.success();
     }
 
@@ -50,8 +52,8 @@ public class UserController {
      * 修改
      */
     @PutMapping("/update")
-    public Result updateById(@RequestBody User user) {
-        userService.updateById(user);
+    public Result updateById(@RequestBody Department department) {
+        departmentService.updateById(department);
         return Result.success();
     }
 
@@ -60,22 +62,16 @@ public class UserController {
      */
     @GetMapping("/selectById/{id}")
     public Result selectById(@PathVariable Integer id) {
-        User user = userService.selectById(id);
-        return Result.success(user);
+        Department department = departmentService.selectById(id);
+        return Result.success(department);
     }
 
     /**
      * 查询所有
      */
     @GetMapping("/selectAll")
-    public Result selectAll(User user ) {
-        List<User> list = userService.selectAll(user);
-        return Result.success(list);
-    }
-
-    @GetMapping("/getAllHeaders")
-    public Result getAllHeaders(User user ) {
-        List<User> list = userService.getAllHeaders(user);
+    public Result selectAll(Department department ) {
+        List<Department> list = departmentService.selectAll(department);
         return Result.success(list);
     }
 
@@ -83,10 +79,10 @@ public class UserController {
      * 分页查询
      */
     @GetMapping("/selectPage")
-    public Result selectPage(User user,
+    public Result selectPage(Department department,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<User> page = userService.selectPage(user, pageNum, pageSize);
+        PageInfo<Department> page = departmentService.selectPage(department, pageNum, pageSize);
         return Result.success(page);
     }
 
