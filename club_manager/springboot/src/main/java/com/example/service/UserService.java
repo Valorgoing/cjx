@@ -7,9 +7,11 @@ import com.example.common.enums.LevelEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
+import com.example.entity.Department;
 import com.example.entity.Notice;
 import com.example.entity.User;
 import com.example.exception.CustomException;
+import com.example.mapper.DepartmentMapper;
 import com.example.mapper.NoticeMapper;
 import com.example.mapper.UserMapper;
 import com.example.utils.TokenUtils;
@@ -30,6 +32,8 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private DepartmentMapper departmentMapper;
     /**
      * 新增
      */
@@ -91,6 +95,14 @@ public class UserService {
     public PageInfo<User> selectPage(User user, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> list = userMapper.selectAll(user);
+        for(User dbUser:list){
+            if(ObjectUtil.isNotEmpty(dbUser.getLevel())&&LevelEnum.HEADER.level.equals(dbUser.getLevel())){
+                Department department=departmentMapper.selectByUserId(dbUser.getId());
+                if(ObjectUtil.isNotEmpty(department)){
+                    dbUser.setDepartmentName(department.getName());
+                }
+            }
+        }
         return PageInfo.of(list);
     }
 
