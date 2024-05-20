@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ChatroomMapper">
+
+    <select id="getTeamList" resultType="com.example.entity.Student">
+        SELECT * FROM student WHERE id IN (
+            SELECT student_id FROM team WHERE team_name = (
+                SELECT team_name FROM team WHERE student_id = #{stuId}
+            )
+        );
+    </select>
+    <select id="getTeamTeacher" resultType="com.example.entity.Teacher">
+        SELECT * FROM teacher WHERE id = (
+            SELECT teacher_id FROM team WHERE student_id = #{stuId}
+        );
+    </select>
+</mapper>

@@ -82,6 +82,14 @@
             <el-menu-item index="/teacher">教师信息</el-menu-item>
             <el-menu-item index="/student">学生信息</el-menu-item>
           </el-submenu>
+
+
+          <!-- 新增聊天室 --->
+          <el-menu-item index="/chatroom">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>聊天室</span>
+            </template>
+          </el-menu-item>
         </el-menu>
       </div>
 
