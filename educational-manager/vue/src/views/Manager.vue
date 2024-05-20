@@ -60,6 +60,7 @@
               <i class="el-icon-menu"></i><span>教学管理</span>
             </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
+            <el-menu-item index="/myCourse">我的课程</el-menu-item>
             <el-menu-item index="/choice">我的选课</el-menu-item>
             <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
             <el-menu-item index="/score">我的成绩</el-menu-item>
