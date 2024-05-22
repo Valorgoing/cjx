@@ -15,7 +15,7 @@
                   width="200"
                   trigger="hover"
                   :content="item.content">
-                <span slot="reference">{{ item.title }}</span>
+                <span slot="reference">{{ item.title }} - {{ item.user }}</span>
               </el-popover>
             </el-timeline-item>
           </el-timeline>
