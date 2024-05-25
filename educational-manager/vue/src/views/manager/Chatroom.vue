@@ -69,11 +69,19 @@ export default {
       </el-header>
       <el-main>
         <div class="chat-container">
-          <div
-              v-for="(message, index) in messages" :key="index"
-              :class="{ 'left': message.sender !== main.name, 'right': message.sender === main.name }"
-              class="bubble"
-          ><p>{{ message.content }}</p></div>
+          <div v-for="(message, index) in messages" :key="index">
+            <div
+                :class="{ 'left': message.sender !== main.name, 'right': message.sender === main.name }"
+                class="sender"
+            ><p>{{ message.sender }}</p></div>
+            <div
+                :class="{ 'left': message.sender !== main.name, 'right': message.sender === main.name }"
+                class="bubble"
+            ><p>{{ message.content }}</p></div>
+          </div>
+
+
+
         </div>
 
 
@@ -157,11 +165,28 @@ export default {
   font-size: 1.1em;
 }
 
+.sender {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.sender p {
+  position: relative;
+  right: 0;
+  text-align: left;
+  max-width: 65%;
+  padding: 0 10px;
+
+  font-size: 0.8em;
+}
+
 .right {
   justify-content: flex-end;
 }
 
-.right p {
+.right.bubble p {
   background: #eef5ff;
 }
 
@@ -169,7 +194,7 @@ export default {
   justify-content: flex-start;
 }
 
-.left p {
+.left.bubble p {
   background: #ffffff;
 }
 
