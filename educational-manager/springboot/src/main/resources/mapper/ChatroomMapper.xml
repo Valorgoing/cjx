@@ -3,17 +3,43 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.ChatroomMapper">
+    <insert id="saveChatHistoryForTeam">
+        INSERT INTO history (student_name, content, team_name)
+        VALUES
+        <foreach collection="historyList" item="item" index="index" separator=",">
+            (#{item.sender}, #{item.content}, #{teamName})
+        </foreach>
+    </insert>
 
-    <select id="getTeamList" resultType="com.example.entity.Student">
+    <delete id="truncateHistory">
+        TRUNCATE TABLE history;
+    </delete>
+
+    <select id="getTeamMemberList" resultType="com.example.entity.Student">
         SELECT * FROM student WHERE id IN (
-            SELECT student_id FROM team WHERE team_name = (
-                SELECT team_name FROM team WHERE student_id = #{stuId}
-            )
+            SELECT student_id FROM team WHERE team_name = #{teamName}
         );
     </select>
+
     <select id="getTeamTeacher" resultType="com.example.entity.Teacher">
         SELECT * FROM teacher WHERE id = (
-            SELECT teacher_id FROM team WHERE student_id = #{stuId}
-        );
+            SELECT teacher_id FROM team WHERE team_name = #{teamName}
+            LIMIT 1
+            );
     </select>
+
+    <select id="getTeamName" resultType="java.lang.String">
+        SELECT team_name FROM team WHERE student_id = #{stuId}
+    </select>
+
+    <select id="getTeamList" resultType="java.lang.String">
+        SELECT DISTINCT team_name FROM team;
+    </select>
+
+    <select id="getChatHistoryForTeam" resultType="java.util.Map">
+        SELECT student_name AS sender, content FROM history WHERE team_name = #{teamName}
+    </select>
+
+
+
 </mapper>
