@@ -52,7 +52,7 @@ export default {
           class="custom-menu"
       >
         <p class="header">小组成员</p>
-        <p class="el-paragraph" v-for="(usr, index) in users" :key="index">
+        <p class="el-paragraph" v-for="(usr, index) in users" :key="index" v-if="usr.name !== main.name">
           {{ usr.name }}
           <span class="status-dot" :class="{'is-online': usr.online, 'is-offline': !usr.online}"></span>
         </p>
