@@ -129,7 +129,7 @@ export default {
     })
     // this.getPie()
     // this.getLine()
-    if (this.user.role === 'STUDENT') {
+    if (this.user.role === 'student') {
       this.getPie();
       this.getLine();
     }
