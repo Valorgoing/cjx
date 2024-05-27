@@ -127,8 +127,12 @@ export default {
         this.$message.error(res.msg)
       }
     })
-    this.getPie()
-    this.getLine()
+    // this.getPie()
+    // this.getLine()
+    if (this.user.role === 'student') {
+      this.getPie();
+      this.getLine();
+    }
   },
   methods: {
     getPie() {
