@@ -11,11 +11,12 @@
     <div class="operation" v-if="user.role === 'TEACHER'">
       <el-button type="primary" plain @click="handleAdd">添加学生</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
-      <el-button type="warning" plain @click="autoAdd">打印学生名单</el-button>
+      <el-button type="warning" plain @click="printStudentList">打印学生名单</el-button>
     </div>
 
-    <div class="table">
-      <el-table :data="tableData" stripe  @selection-change="handleSelectionChange">
+<!--    <div class="table">-->
+    <div ref="printArea">
+    <el-table :data="tableData" stripe  @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" v-if="user.role === 'TEACHER'"></el-table-column>
         <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
         <el-table-column prop="courseName" label="课程名称" show-overflow-tooltip></el-table-column>
@@ -86,7 +87,7 @@
 
 <script>
 export default {
-  name: "Attendance",
+  name: "MyCourse",
   data() {
     return {
       tableData: [],
@@ -118,6 +119,13 @@ export default {
     this.loadCourseSearch()
   },
   methods: {
+    printStudentList() {
+      let printContent = this.$refs.printArea.innerHTML; // 获取打印区域的 HTML
+      let originalContent = document.body.innerHTML; // 保存原始页面内容
+      document.body.innerHTML = printContent; // 替换页面内容为打印内容
+      window.print(); // 调用浏览器的打印功能
+      document.body.innerHTML = originalContent; // 恢复原始页面内容
+    },
     loadCourseSearch() {
       if ('STUDENT' === this.user.role) {
         this.$request.get('/choice/selectAll?studentId=' + this.user.id).then(res => {

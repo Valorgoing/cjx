@@ -1,29 +1,35 @@
 <template>
   <div>
     <div class="search">
-      <el-input placeholder="请输入小组名称" style="width: 200px" v-model="name"></el-input>
+      <el-input placeholder="请输入报告说明" style="width: 200px" v-model="content"></el-input>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
-    <div class="operation" v-if="user.role==='ADMIN'">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
-      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+    <div class="operation" v-if="user.role !== 'TEACHER'">
+      <el-button type="primary" plain @click="handleAdd">报告提交</el-button>
     </div>
 
     <div class="table">
-      <el-table :data="tableData" stripe  @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" v-if="user.role==='ADMIN'"></el-table-column>
+      <el-table :data="tableData" stripe>
         <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
-        <el-table-column prop="name" label="小组名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="content" label="小组成员" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="specialityName" label="角色" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="teacherName" label="成绩" show-overflow-tooltip></el-table-column>
-
-        <el-table-column label="操作" width="180" align="center" v-if="user.role==='ADMIN'">
+        <el-table-column prop="content" label="报告说明" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="studentName" label="学生姓名" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="courseName" label="课程名称"></el-table-column>
+        <el-table-column prop="teacherName" label="授课教师"></el-table-column>
+        <el-table-column prop="file" label="报告文件">
           <template v-slot="scope">
-            <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini">编辑</el-button>
-            <el-button plain type="danger" size="mini" @click=del(scope.row.id)>删除</el-button>
+            <el-button type="warning" size="mini" @click="down(scope.row.file)">下载查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="score" label="报告打分"></el-table-column>
+        <el-table-column prop="descr" label="审核说明"></el-table-column>
+
+        <el-table-column label="操作" width="180" align="center" >
+          <template v-slot="scope">
+            <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini" v-if="user.role === 'STUDENT'">编辑</el-button>
+            <el-button plain type="danger" size="mini" @click=del(scope.row.id) >删除</el-button>
+            <el-button plain type="primary" size="mini" @click="handleCheck(scope.row)" v-if="user.role !== 'STUDENT'">打分</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -42,25 +48,27 @@
     </div>
 
 
-    <el-dialog title="信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+    <el-dialog title="报告信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="form" :rules="rules" ref="formRef">
-        <el-form-item prop="name" label="班级名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item prop="content" label="报告说明">
+          <el-input type="textarea" :rows="4" v-model="form.content" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item prop="content" label="班级描述">
-          <el-input type="textarea" :rows="5" v-model="form.content" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item prop="collegeId" label="所属专业">
-          <el-select v-model="form.specialityId" placeholder="请选择专业" style="width: 100%">
-<!--            <el-option v-for="item in specialityData" :label="item.name" :value="item.id"></el-option>-->
-            <el-option v-for="item in specialityData" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-form-item prop="courseId" label="选择课程">
+          <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%">
+            <el-option v-for="item in courseData" :label="item.name" :value="item.courseId"></el-option>
+            <!--            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.courseId"></el-option>-->
           </el-select>
         </el-form-item>
-        <el-form-item prop="teacherId" label="班主任">
-          <el-select v-model="form.teacherId" placeholder="请选择教师" style="width: 100%">
-<!--            <el-option v-for="item in teacherData" :label="item.name" :value="item.id"></el-option>-->
-            <el-option v-for="item in teacherData" :label="item.name" :value="item.value" :key="item.id"></el-option>
-          </el-select>
+        <el-form-item label="报告文件">
+          <el-upload
+              class="avatar-uploader"
+              :action="$baseUrl + '/files/upload'"
+              :headers="{ token: user.token }"
+              list-type="text"
+              :on-success="handleFileSuccess"
+          >
+            <el-button type="primary">上传文件</el-button>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -69,99 +77,109 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="进行打分" :visible.sync="checkVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+      <el-form label-width="100px" style="padding-right: 50px" :model="form">
+        <el-form-item prop="score" label="报告打分">
+          <el-input v-model="form.score" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item prop="descr" label="打分说明">
+          <el-input type="textarea" :rows="4" v-model="form.descr" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="checkVisible = false">取 消</el-button>
+        <el-button type="primary" @click="check">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
 export default {
-  name: "Test",
+  name: "Homework",
   data() {
     return {
-      // tableData: [],  // 所有的数据
+      tableData: [
+        // { id: 1, content: "第一次报告：请完成设计模式的学习", studentName: "张三", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 85, descr: "良好" },
+        // { id: 2, content: "第二次报告：数据库基础练习", studentName: "李四", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 92, descr: "优秀" },
+        // { id: 3, content: "第三次报告：前端HTML页面设计", studentName: "王五", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 78, descr: "合格" },
+        // { id: 4, content: "第四次报告：Java基础知识测试", studentName: "赵六", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 88, descr: "良好" },
+        // { id: 5, content: "第五次报告：网络协议分析", studentName: "孙七", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 95, descr: "优秀" },
+        // 更多数据...
+      ],  // 所有的数据
       pageNum: 1,   // 当前的页码
       pageSize: 10,  // 每页显示的个数
       total: 0,
-      name: null,
+      content: null,
       fromVisible: false,
+      checkVisible: false,
       form: {},
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
-        name: [
-          {required: true, message: '请输入专业名称', trigger: 'blur'},
+        courseId: [
+          {required: true, message: '请选择课程', trigger: 'blur'},
+        ],
+        content: [
+          {required: true, message: '请输入报告说明', trigger: 'blur'},
         ],
       },
       ids: [],
-      // specialityData: [],
-      // teacherData: []
-      specialityData: [
-        { id: '1', name: '计算机科学与技术', value: '1' },
-        { id: '2', name: '信息技术', value: '2' },
-        { id: '3', name: '电子工程', value: '3' }
-      ],
-
-      teacherData: [
-        { id: '1', name: '张三', value: '1' },
-        { id: '2', name: '李四', value: '2' },
-        { id: '3', name: '王五', value: '3' }
-      ],
-      tableData: [
-        { id: '1', name: '第五小组', content: '陈陈陈', specialityName: '开发经理', teacherName: '98' },
-        { id: '2', name: '第五小组', content: 'kk', specialityName: '测试经理', teacherName: '99' },
-        { id: '3', name: '第五小组', content: '李', specialityName: '质量经理', teacherName: '98' },
-        { id: '4', name: '第五小组', content: 'nn', specialityName: '计划经理', teacherName: '88' },
-        { id: '5', name: '第五小组', content: 'opo', specialityName: '产品经理', teacherName: '98' }
-      ],
-
+      courseData: [
+        // { name: "软件协同设计", value: "1" },
+        // { name: "数据库原理", value: "2" },
+        // { name: "前端技术", value: "3" },
+        // { name: "Java编程", value: "4" },
+        // { name: "计算机网络", value: "5" },
+      ]
     }
   },
   created() {
     this.load(1)
-    this.loadSpeciality()
-    this.loadTeacher()
+    this.loadCourse()
   },
   methods: {
-    // loadSpeciality() {
-    //   this.$request.get('/speciality/selectAll').then(res => {
-    //     if (res.code === '200') {
-    //       this.specialityData = res.data
-    //     } else {
-    //       this.$message.error(res.data)
-    //     }
-    //   })
-    // },
-    // loadTeacher() {
-    //   this.$request.get('/teacher/selectAll').then(res => {
-    //     if (res.code === '200') {
-    //       this.teacherData = res.data
-    //     } else {
-    //       this.$message.error(res.msg)
-    //     }
-    //   })
-    // },
-    loadSpeciality() {
-      // 直接使用静态数据填充
-      this.specialityData = this.specialityData;
+    loadCourse() {
+      this.$request.get('/choice/selectAll?studentId=' + this.user.id).then(res => {
+        if (res.code === '200') {
+          this.courseData = res.data
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     },
-
-    loadTeacher() {
-      // 直接使用静态数据填充
-      this.teacherData = this.teacherData;
-    },
-
     handleAdd() {   // 新增数据
-      this.form = {}  // 新增数据的时候清空数据
+      this.form = {
+        studentId: this.user.id,
+      }  // 新增数据的时候清空数据
       this.fromVisible = true   // 打开弹窗
     },
     handleEdit(row) {   // 编辑数据
       this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
+      this.form.status = '待审核'
+      this.form.descr = ''
       this.fromVisible = true   // 打开弹窗
+    },
+    handleCheck(row) {
+      this.form = JSON.parse(JSON.stringify(row))
+      this.checkVisible = true
+    },
+    check() {
+      this.$request.put('/test/update', this.form).then(res => {
+        if (res.code === '200') {
+          this.$message.success('操作成功')
+          this.load(1)
+          this.checkVisible = false
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     },
     save() {   // 保存按钮触发的逻辑  它会触发新增或者更新
       this.$refs.formRef.validate((valid) => {
         if (valid) {
           this.$request({
-            url: this.form.id ? '/classes/update' : '/classes/add',
+            url: this.form.id ? '/test/update' : '/test/add',
             method: this.form.id ? 'PUT' : 'POST',
             data: this.form
           }).then(res => {
@@ -177,8 +195,8 @@ export default {
       })
     },
     del(id) {   // 单个删除
-      this.$confirm('您确定删除吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/classes/delete/' + id).then(res => {
+      this.$confirm('您确定删除报告吗？报告会跟你的平时分强挂钩哦！！', '灵魂拷问', {type: "warning"}).then(response => {
+        this.$request.delete('/test/delete/' + id).then(res => {
           if (res.code === '200') {   // 表示操作成功
             this.$message.success('操作成功')
             this.load(1)
@@ -189,56 +207,44 @@ export default {
       }).catch(() => {
       })
     },
-    handleSelectionChange(rows) {   // 当前选中的所有的行数据
-      this.ids = rows.map(v => v.id)   //  [1,2]
-    },
-    delBatch() {   // 批量删除
-      if (!this.ids.length) {
-        this.$message.warning('请选择数据')
-        return
-      }
-      this.$confirm('您确定批量删除这些数据吗？', '确认删除', {type: "warning"}).then(response => {
-        this.$request.delete('/classes/delete/batch', {data: this.ids}).then(res => {
-          if (res.code === '200') {   // 表示操作成功
-            this.$message.success('操作成功')
-            this.load(1)
-          } else {
-            this.$message.error(res.msg)  // 弹出错误的信息
-          }
-        })
-      }).catch(() => {
+    load(pageNum) {  // 分页查询
+      if (pageNum) this.pageNum = pageNum
+      this.$request.get('/test/selectPage', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          content: this.content,
+        }
+      }).then(res => {
+        this.tableData = res.data?.list
+        this.total = res.data?.total
       })
     },
-    // load(pageNum) {  // 分页查询
-    //   if (pageNum) this.pageNum = pageNum
-    //   this.$request.get('/classes/selectPage', {
-    //     params: {
-    //       pageNum: this.pageNum,
-    //       pageSize: this.pageSize,
-    //       name: this.name,
-    //     }
-    //   }).then(res => {
-    //     this.tableData = res.data?.list
-    //     this.total = res.data?.total
-    //   })
+    // load(pageNum) {
+    //   if (pageNum) this.pageNum = pageNum;
+    //   let data = this.tableData;
+    //   if (this.content) {
+    //     data = data.filter(item => item.content.includes(this.content));
+    //   }
+    //   this.total = data.length;
+    //   const start = (this.pageNum - 1) * this.pageSize;
+    //   const end = start + this.pageSize;
+    //   this.tableData = data.slice(start, end);
     // },
-    load(pageNum) {
-      if (pageNum) this.pageNum = pageNum;
-      let filteredData = this.tableData;
-      if (this.name) {
-        filteredData = this.tableData.filter(data => data.name.includes(this.name));
-      }
-      this.total = filteredData.length;
-      this.tableData = filteredData.slice((this.pageNum - 1) * this.pageSize, this.pageNum * this.pageSize);
-    },
 
     reset() {
-      this.name = null
+      this.content = null
       this.load(1)
     },
     handleCurrentChange(pageNum) {
       this.load(pageNum)
     },
+    handleFileSuccess(res) {
+      this.form.file = res.data
+    },
+    down(url) {
+      location.href = url
+    }
   }
 }
 </script>

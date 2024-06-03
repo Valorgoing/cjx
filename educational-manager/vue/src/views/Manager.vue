@@ -61,7 +61,7 @@
             </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
             <el-menu-item index="/myCourse">我的课程</el-menu-item>
-            <el-menu-item index="/test">小组成绩管理</el-menu-item>
+            <el-menu-item index="/test">小组报告提交与评分</el-menu-item>
             <el-menu-item index="/group">小组成员管理</el-menu-item>
             <el-menu-item index="/choice" v-if="user.role === 'STUDENT'">我的选课</el-menu-item>
             <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
