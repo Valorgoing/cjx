@@ -77,7 +77,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="请假审核" :visible.sync="checkVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+    <el-dialog title="进行打分" :visible.sync="checkVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="form">
         <el-form-item prop="score" label="作业打分">
           <el-input v-model="form.score" autocomplete="off"></el-input>
@@ -100,7 +100,14 @@ export default {
   name: "Homework",
   data() {
     return {
-      tableData: [],  // 所有的数据
+      tableData: [
+        { id: 1, content: "第一次作业：请完成设计模式的学习", studentName: "张三", courseName: "软件协同设计", teacherName: "曹教授", file: "file1.pdf", score: 85, descr: "良好" },
+        { id: 2, content: "第二次作业：数据库基础练习", studentName: "李四", courseName: "软件协同设计", teacherName: "曹教授", file: "file2.pdf", score: 92, descr: "优秀" },
+        { id: 3, content: "第三次作业：前端HTML页面设计", studentName: "王五", courseName: "软件协同设计", teacherName: "曹教授", file: "file3.pdf", score: 78, descr: "合格" },
+        { id: 4, content: "第四次作业：Java基础知识测试", studentName: "赵六", courseName: "软件协同设计", teacherName: "曹教授", file: "file4.pdf", score: 88, descr: "良好" },
+        { id: 5, content: "第五次作业：网络协议分析", studentName: "孙七", courseName: "软件协同设计", teacherName: "曹教授", file: "file5.pdf", score: 95, descr: "优秀" },
+        // 更多数据...
+      ],  // 所有的数据
       pageNum: 1,   // 当前的页码
       pageSize: 10,  // 每页显示的个数
       total: 0,
@@ -114,11 +121,17 @@ export default {
           {required: true, message: '请选择课程', trigger: 'blur'},
         ],
         content: [
-          {required: true, message: '请输入请假说明', trigger: 'blur'},
+          {required: true, message: '请输入作业说明', trigger: 'blur'},
         ],
       },
       ids: [],
-      courseData: []
+      courseData: [
+        { name: "软件协同设计", value: "1" },
+        { name: "数据库原理", value: "2" },
+        { name: "前端技术", value: "3" },
+        { name: "Java编程", value: "4" },
+        { name: "计算机网络", value: "5" },
+      ]
     }
   },
   created() {
@@ -194,19 +207,31 @@ export default {
       }).catch(() => {
       })
     },
-    load(pageNum) {  // 分页查询
-      if (pageNum) this.pageNum = pageNum
-      this.$request.get('/homework/selectPage', {
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          content: this.content,
-        }
-      }).then(res => {
-        this.tableData = res.data?.list
-        this.total = res.data?.total
-      })
+    // load(pageNum) {  // 分页查询
+    //   if (pageNum) this.pageNum = pageNum
+    //   this.$request.get('/homework/selectPage', {
+    //     params: {
+    //       pageNum: this.pageNum,
+    //       pageSize: this.pageSize,
+    //       content: this.content,
+    //     }
+    //   }).then(res => {
+    //     this.tableData = res.data?.list
+    //     this.total = res.data?.total
+    //   })
+    // },
+    load(pageNum) {
+      if (pageNum) this.pageNum = pageNum;
+      let data = this.tableData;
+      if (this.content) {
+        data = data.filter(item => item.content.includes(this.content));
+      }
+      this.total = data.length;
+      const start = (this.pageNum - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      this.tableData = data.slice(start, end);
     },
+
     reset() {
       this.content = null
       this.load(1)

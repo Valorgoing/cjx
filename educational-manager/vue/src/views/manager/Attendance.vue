@@ -92,7 +92,14 @@ export default {
   name: "Attendance",
   data() {
     return {
-      tableData: [],  // 所有的数据
+      tableData: [
+        { id: 1, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生A", time: "2023-09-01", status: "正常" },
+        { id: 2, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生B", time: "2023-09-01", status: "迟到" },
+        { id: 3, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生C", time: "2023-09-02", status: "早退" },
+        { id: 4, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生D", time: "2023-09-02", status: "缺勤" },
+        { id: 5, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生E", time: "2023-09-03", status: "正常" },
+        // 更多模拟数据...
+      ],  // 所有的数据
       pageNum: 1,   // 当前的页码
       pageSize: 10,  // 每页显示的个数
       total: 0,
@@ -249,19 +256,31 @@ export default {
       }).catch(() => {
       })
     },
-    load(pageNum) {  // 分页查询
-      if (pageNum) this.pageNum = pageNum
-      this.$request.get('/attendance/selectPage', {
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          courseId: this.courseId,
-        }
-      }).then(res => {
-        this.tableData = res.data?.list
-        this.total = res.data?.total
-      })
+    // load(pageNum) {  // 分页查询
+    //   if (pageNum) this.pageNum = pageNum
+    //   this.$request.get('/attendance/selectPage', {
+    //     params: {
+    //       pageNum: this.pageNum,
+    //       pageSize: this.pageSize,
+    //       courseId: this.courseId,
+    //     }
+    //   }).then(res => {
+    //     this.tableData = res.data?.list
+    //     this.total = res.data?.total
+    //   })
+    // },
+    load(pageNum) {
+      if (pageNum) this.pageNum = pageNum;
+      let data = this.tableData;
+      if (this.courseId) {
+        data = data.filter(item => item.courseId === this.courseId);
+      }
+      this.total = data.length;
+      const start = (this.pageNum - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      this.tableData = data.slice(start, end);
     },
+
     reset() {
       this.courseId = null
       this.load(1)

@@ -40,6 +40,7 @@ const routes = [
       { path: 'apply', name: 'Apply', meta: { name: '请假申请' }, component: () => import('../views/manager/Apply') },
       { path: 'homework', name: 'Homework', meta: { name: '请假申请' }, component: () => import('../views/manager/Homework') },
       { path: 'attendance', name: 'Attendance', meta: { name: '考勤信息' }, component: () => import('../views/manager/Attendance') },
+      { path: 'logs', name: 'Logs', meta: { name: '日志管理' }, component: () => import('../views/manager/Logs') },
       { path: 'chatroom', name: 'Chatroom', meta: { name: '聊天室' }, component: () => import('../views/manager/Chatroom') },
     ]
   },
