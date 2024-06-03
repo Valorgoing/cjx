@@ -1,12 +1,15 @@
 <template>
   <div>
     <div class="search">
-      <el-select v-model="courseId" placeholder="请选择课程" style="width: 200px">
+<!--      <el-select v-model="courseId" placeholder="请选择课程" style="width: 200px">-->
+      <el-select v-model="courseId" placeholder="软件协同设计" style="width: 200px">
         <!--        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.id"></el-option>-->
         <el-option v-for="item in courseSearchData" :label="item.name" :value="item.value" :key="item.id"></el-option>
       </el-select>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+      <el-button type="info" plain style="margin-left: 10px" @click="add">添加学生</el-button>
+      <el-button type="warning" plain style="margin-left: 10px" @click="printAll">打印学生名单</el-button>
     </div>
 
     <div class="table">
@@ -45,17 +48,23 @@
 
     <el-dialog title="信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="form" :rules="rules" ref="formRef">
-        <el-form-item prop="courseId" label="选择课程">
-          <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%" @change="getStudent">
-            <!--            <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>-->
-            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.id"></el-option>
-          </el-select>
+<!--        <el-form-item prop="courseId" label="选择课程">-->
+<!--          <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%" @change="getStudent">-->
+<!--            &lt;!&ndash;            <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>&ndash;&gt;-->
+<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.id"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item prop="studentId" label="选择学生">-->
+<!--          <el-select v-model="studentId" placeholder="请选择学生" style="width: 100%">-->
+<!--            &lt;!&ndash;            <el-option v-for="item in studentData" :label="item.studentName" :value="item.studentId"></el-option>&ndash;&gt;-->
+<!--            <el-option v-for="item in studentData" :label="item.studentName" :value="item.value" :key="item.studentId"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+        <el-form-item label="课程名称">
+          <el-input v-model="form.courseName"></el-input>
         </el-form-item>
-        <el-form-item prop="studentId" label="选择学生">
-          <el-select v-model="studentId" placeholder="请选择学生" style="width: 100%">
-            <!--            <el-option v-for="item in studentData" :label="item.studentName" :value="item.studentId"></el-option>-->
-            <el-option v-for="item in studentData" :label="item.studentName" :value="item.value" :key="item.studentId"></el-option>
-          </el-select>
+        <el-form-item label="学生姓名">
+          <el-input v-model="form.studentName"></el-input>
         </el-form-item>
         <el-form-item prop="teamName" label="队伍名称">
           <el-input v-model="form.teamName" autocomplete="off" ></el-input>
@@ -196,42 +205,88 @@ export default {
       this.studentId = null
     },
     handleEdit(row) {   // 编辑数据
-      this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
-      this.getStudentEdit(this.form.courseId)
+      // this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
+      // this.getStudentEdit(this.form.courseId)
+      this.form = {
+        courseName: row.courseName,
+        studentName: row.studentName,
+        teamName: row.teamName,
+        role: row.role,
+        // 假设还有其他需要编辑的字段
+      };
+      this.fromVisible = true; // 显示编辑对话框
     },
-    save() {   // 保存按钮触发的逻辑  它会触发新增或者更新
+    save() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          this.form.studentId = this.studentId
-          this.$request({
-            url: this.form.id ? '/myCourse/update' : '/myCourse/add',
-            method: this.form.id ? 'PUT' : 'POST',
-            data: this.form
-          }).then(res => {
-            if (res.code === '200') {  // 表示成功保存
-              this.$message.success('保存成功')
-              this.load(1)
-              this.fromVisible = false
-            } else {
-              this.$message.error(res.msg)  // 弹出错误的信息
+          if (this.form.id) {
+            // 模拟更新操作
+            let index = this.tableData.findIndex(item => item.id === this.form.id);
+            if (index !== -1) {
+              this.tableData[index] = {...this.tableData[index], ...this.form};
             }
-          })
-        }
-      })
-    },
-    del(id) {   // 单个删除
-      this.$confirm('您确定删除吗？', '灵魂拷问', {type: "warning"}).then(response => {
-        this.$request.delete('/myCourse/delete/' + id).then(res => {
-          if (res.code === '200') {   // 表示操作成功
-            this.$message.success('操作成功')
-            this.load(1)
           } else {
-            this.$message.error(res.msg)  // 弹出错误的信息
+            // 模拟添加操作
+            this.form.id = this.tableData.length + 1;  // 假设ID简单递增
+            this.tableData.push(this.form);
           }
-        })
-      }).catch(() => {
-      })
+          this.$message.success('操作成功');
+          this.fromVisible = false;
+          this.form = {};  // 清空表单
+        }
+      });
     },
+    del(id) {
+      this.$confirm('您确定要删除这条记录吗？', '确认删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const index = this.tableData.findIndex(item => item.id === id);
+        if (index !== -1) {
+          this.tableData.splice(index, 1);  // 从数组中移除
+          this.$message.success('删除成功');
+        } else {
+          this.$message.error('删除失败: 记录未找到');
+        }
+      }).catch(() => {
+        this.$message.info('删除操作已取消');
+      });
+    },
+
+    // save() {   // 保存按钮触发的逻辑  它会触发新增或者更新
+    //   this.$refs.formRef.validate((valid) => {
+    //     if (valid) {
+    //       this.form.studentId = this.studentId
+    //       this.$request({
+    //         url: this.form.id ? '/myCourse/update' : '/myCourse/add',
+    //         method: this.form.id ? 'PUT' : 'POST',
+    //         data: this.form
+    //       }).then(res => {
+    //         if (res.code === '200') {  // 表示成功保存
+    //           this.$message.success('保存成功')
+    //           this.load(1)
+    //           this.fromVisible = false
+    //         } else {
+    //           this.$message.error(res.msg)  // 弹出错误的信息
+    //         }
+    //       })
+    //     }
+    //   })
+    // },
+    // del(id) {   // 单个删除
+    //   this.$confirm('您确定删除吗？', '灵魂拷问', {type: "warning"}).then(response => {
+    //     this.$request.delete('/myCourse/delete/' + id).then(res => {
+    //       if (res.code === '200') {   // 表示操作成功
+    //         this.$message.success('操作成功')
+    //         this.load(1)
+    //       } else {
+    //         this.$message.error(res.msg)  // 弹出错误的信息
+    //       }
+    //     })
+    //   }).catch(() => {
+    //   })
+    // },
     handleSelectionChange(rows) {   // 当前选中的所有的行数据
       this.ids = rows.map(v => v.id)   //  [1,2]
     },
@@ -252,7 +307,7 @@ export default {
       // }).catch(() => {
       // })
     },
-    load(pageNum) {  // 分页查询
+    // load(pageNum) {  // 分页查询
       // if (pageNum) this.pageNum = pageNum
       // this.$request.get('/myCourse/selectPage', {
       //   params: {
@@ -264,6 +319,24 @@ export default {
       //   this.tableData = res.data?.list
       //   this.total = res.data?.total
       // })
+    // },
+    load(pageNum) {
+      if (pageNum) this.pageNum = pageNum
+      this.total = 15;  // 总共有15条数据，代表3个团队，每个团队5个角色
+      this.tableData = [
+        // 第一组数据：团队 Alpha
+        { id: 1, courseName: "软件协同设计", teacherName: "李教授", studentName: "李四", teamName: "Alpha", role: "产品经理" },
+        { id: 2, courseName: "软件协同设计", teacherName: "李教授", studentName: "王五", teamName: "Alpha", role: "计划经理" },
+        { id: 3, courseName: "软件协同设计", teacherName: "李教授", studentName: "赵六", teamName: "Alpha", role: "开发经理" },
+        { id: 4, courseName: "软件协同设计", teacherName: "李教授", studentName: "钱七", teamName: "Alpha", role: "测试经理" },
+        { id: 5, courseName: "软件协同设计", teacherName: "李教授", studentName: "孙八", teamName: "Alpha", role: "质量经理" },
+        // 第二组数据：团队 Beta
+        { id: 6, courseName: "软件协同设计", teacherName: "李教授", studentName: "周九", teamName: "Beta", role: "产品经理" },
+        { id: 7, courseName: "软件协同设计", teacherName: "李教授", studentName: "吴十", teamName: "Beta", role: "计划经理" },
+        { id: 8, courseName: "软件协同设计", teacherName: "李教授", studentName: "郑十一", teamName: "Beta", role: "开发经理" },
+        { id: 9, courseName: "软件协同设计", teacherName: "李教授", studentName: "王十二", teamName: "Beta", role: "测试经理" },
+        { id: 10, courseName: "软件协同设计", teacherName: "李教授", studentName: "冯十三", teamName: "Beta", role: "质量经理" },
+      ];
     },
     reset() {
       this.courseId = null
