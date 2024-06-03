@@ -45,6 +45,7 @@
 
             <el-menu-item index="/notice" v-if="user.role!=='STUDENT'">公告信息</el-menu-item>
             <el-menu-item index="/examPlan" v-if="user.role!=='STUDENT'">考试安排</el-menu-item>
+            <el-menu-item index="/roomPlan">教室安排</el-menu-item>
           </el-submenu>
           <el-submenu index="administration">
             <template slot="title">
