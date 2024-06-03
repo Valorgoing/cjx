@@ -45,7 +45,6 @@
 
             <el-menu-item index="/notice" v-if="user.role!=='STUDENT'">公告信息</el-menu-item>
             <el-menu-item index="/examPlan" v-if="user.role!=='STUDENT'">考试安排</el-menu-item>
-            <el-menu-item index="/roomPlan">教室安排</el-menu-item>
           </el-submenu>
           <el-submenu index="administration">
             <template slot="title">
@@ -53,6 +52,7 @@
             </template>
             <el-menu-item index="/college">学院信息</el-menu-item>
             <el-menu-item index="/speciality">专业信息</el-menu-item>
+            <el-menu-item index="/roomPlan">教室安排</el-menu-item>
             <el-menu-item index="/classes">班级信息</el-menu-item>
           </el-submenu>
           <el-submenu index="teach">
@@ -61,7 +61,7 @@
             </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
             <el-menu-item index="/myCourse">我的课程</el-menu-item>
-            <el-menu-item index="/choice">我的选课</el-menu-item>
+            <el-menu-item index="/choice" v-if="user.role === 'STUDENT'">我的选课</el-menu-item>
             <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
             <el-menu-item index="/score">我的成绩</el-menu-item>
             <el-menu-item index="/comment">网上评教</el-menu-item>
@@ -88,6 +88,11 @@
           <el-menu-item index="/chatroom">
             <template slot="title">
               <i class="el-icon-menu"></i><span>聊天室</span>
+            </template>
+          </el-menu-item>
+          <el-menu-item index="/logs">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>日志管理</span>
             </template>
           </el-menu-item>
         </el-menu>
