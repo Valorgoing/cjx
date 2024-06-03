@@ -43,8 +43,8 @@
               <i class="el-icon-menu"></i><span>信息公告</span>
             </template>
 
-            <el-menu-item index="/notice" v-if="user.role!=='STUDENT'">公告信息</el-menu-item>
-            <el-menu-item index="/examPlan" v-if="user.role!=='STUDENT'">考试安排</el-menu-item>
+            <el-menu-item index="/notice" >公告信息</el-menu-item>
+            <el-menu-item index="/examPlan">考试安排</el-menu-item>
           </el-submenu>
           <el-submenu index="administration">
             <template slot="title">
@@ -61,6 +61,8 @@
             </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
             <el-menu-item index="/myCourse">我的课程</el-menu-item>
+            <el-menu-item index="/test">小组成绩管理</el-menu-item>
+            <el-menu-item index="/group">小组成员管理</el-menu-item>
             <el-menu-item index="/choice" v-if="user.role === 'STUDENT'">我的选课</el-menu-item>
             <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
             <el-menu-item index="/score">我的成绩</el-menu-item>

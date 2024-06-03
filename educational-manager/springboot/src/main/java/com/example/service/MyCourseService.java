@@ -4,7 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
-import com.example.entity.Team;
+import com.example.entity.MyCourse;
+import com.example.entity.MyCourse;
 import com.example.exception.CustomException;
 import com.example.mapper.MyCourseMapper;
 import com.example.utils.TokenUtils;
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 考勤信息表业务处理
+ * 课程班级信息表业务处理
  **/
 @Service
 public class MyCourseService {
@@ -27,13 +28,13 @@ public class MyCourseService {
     /**
      * 新增
      */
-    public void add(Team team) {
-        // 判断同一个学生同一门课同一天的考勤记录只能是一条
-//        Team dbAttendance = myCourseMapper.selectByStudentIdAndCourseIdAndTime(team.getStudentId(), team.getCourseId(), team.getTime());
-//        if (ObjectUtil.isNotEmpty(dbAttendance)) {
-//            throw new CustomException(ResultCodeEnum.ATTENDANCE_ALREADY_ERROR);
-//        }
-        myCourseMapper.insert(team);
+    public void add(MyCourse myCourse) {
+//         判断同一个学生同一门课同一天的考勤记录只能是一条
+        MyCourse dbMyCourse = myCourseMapper.selectByStudentIdAndCourseIdAndClubName(myCourse.getStudentId(), myCourse.getCourseId(), myCourse.getClubName());
+        if (ObjectUtil.isNotEmpty(dbMyCourse)) {
+            throw new CustomException(ResultCodeEnum.ATTENDANCE_ALREADY_ERROR);
+        }
+        myCourseMapper.insert(myCourse);
     }
 
     /**
@@ -55,37 +56,37 @@ public class MyCourseService {
     /**
      * 修改
      */
-    public void updateById(Team team) {
-        myCourseMapper.updateById(team);
+    public void updateById(MyCourse myCourse) {
+        myCourseMapper.updateById(myCourse);
     }
 
     /**
      * 根据ID查询
      */
-    public Team selectById(Integer id) {
+    public MyCourse selectById(Integer id) {
         return myCourseMapper.selectById(id);
     }
 
     /**
      * 查询所有
      */
-    public List<Team> selectAll(Team team) {
-        return myCourseMapper.selectAll(team);
+    public List<MyCourse> selectAll(MyCourse myCourse) {
+        return myCourseMapper.selectAll(myCourse);
     }
 
     /**
      * 分页查询
      */
-    public PageInfo<Team> selectPage(Team team, Integer pageNum, Integer pageSize) {
+    public PageInfo<MyCourse> selectPage(MyCourse myCourse, Integer pageNum, Integer pageSize) {
         Account currentUser = TokenUtils.getCurrentUser();
         if (RoleEnum.TEACHER.name().equals(currentUser.getRole())) {
-            team.setTeacherId(currentUser.getId());
+            myCourse.setTeacherId(currentUser.getId());
         }
         if (RoleEnum.STUDENT.name().equals(currentUser.getRole())) {
-            team.setStudentId(currentUser.getId());
+            myCourse.setStudentId(currentUser.getId());
         }
         PageHelper.startPage(pageNum, pageSize);
-        List<Team> list = myCourseMapper.selectAll(team);
+        List<MyCourse> list = myCourseMapper.selectAll(myCourse);
         return PageInfo.of(list);
     }
 

@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.common.Result;
-import com.example.entity.Team;
+import com.example.entity.MyCourse;
 import com.example.service.MyCourseService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * 考勤信息表前端操作接口
  **/
 @RestController
-@RequestMapping("/team")
+@RequestMapping("/myCourse")
 public class MyCourseController {
 
     @Resource
@@ -27,8 +27,8 @@ public class MyCourseController {
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Team team) {
-        myCourseService.add(team);
+    public Result add(@RequestBody MyCourse myCourse) {
+        myCourseService.add(myCourse);
         return Result.success();
     }
 
@@ -54,8 +54,8 @@ public class MyCourseController {
      * 修改
      */
     @PutMapping("/update")
-    public Result updateById(@RequestBody Team team) {
-        myCourseService.updateById(team);
+    public Result updateById(@RequestBody MyCourse myCourse) {
+        myCourseService.updateById(myCourse);
         return Result.success();
     }
 
@@ -64,16 +64,16 @@ public class MyCourseController {
      */
     @GetMapping("/selectById/{id}")
     public Result selectById(@PathVariable Integer id) {
-        Team team = myCourseService.selectById(id);
-        return Result.success(team);
+        MyCourse myCourse = myCourseService.selectById(id);
+        return Result.success(myCourse);
     }
 
     /**
      * 查询所有
      */
     @GetMapping("/selectAll")
-    public Result selectAll(Team team ) {
-        List<Team> list = myCourseService.selectAll(team);
+    public Result selectAll(MyCourse myCourse ) {
+        List<MyCourse> list = myCourseService.selectAll(myCourse);
         return Result.success(list);
     }
 
@@ -81,10 +81,10 @@ public class MyCourseController {
      * 分页查询
      */
     @GetMapping("/selectPage")
-    public Result selectPage(Team team,
+    public Result selectPage(MyCourse myCourse,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<Team> page = myCourseService.selectPage(team, pageNum, pageSize);
+        PageInfo<MyCourse> page = myCourseService.selectPage(myCourse, pageNum, pageSize);
         return Result.success(page);
     }
 
@@ -93,8 +93,8 @@ public class MyCourseController {
 //        Map<String, Object> resultMap = new HashMap<>();
 //        List<Map<String, Object>> list = new ArrayList<>();
 //        // 处理数据
-//        List<Team> all = myCourseService.selectAll(new Team());
-//        Map<String, List<Team>> collect = all.stream().collect(Collectors.groupingBy(Team::getStatus));
+//        List<MyCourse> all = myCourseService.selectAll(new MyCourse());
+//        Map<String, List<MyCourse>> collect = all.stream().collect(Collectors.groupingBy(MyCourse::getStatus));
 //        for (String key : collect.keySet()) {
 //            Map<String, Object> map = new HashMap<>();
 //            map.put("name", key);

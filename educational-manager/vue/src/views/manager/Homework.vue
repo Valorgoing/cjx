@@ -6,7 +6,7 @@
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
-    <div class="operation" v-if="user.role === 'STUDENT'">
+    <div class="operation" v-if="user.role !== 'TEACHER'">
       <el-button type="primary" plain @click="handleAdd">作业提交</el-button>
     </div>
 
@@ -25,11 +25,11 @@
         <el-table-column prop="score" label="作业打分"></el-table-column>
         <el-table-column prop="descr" label="审核说明"></el-table-column>
 
-        <el-table-column label="操作" width="180" align="center" v-if="user.role !== 'ADMIN'">
+        <el-table-column label="操作" width="180" align="center" >
           <template v-slot="scope">
-            <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini" v-if="user.role === 'STUDENT' && !scope.row.score">编辑</el-button>
-            <el-button plain type="danger" size="mini" @click=del(scope.row.id) v-if="user.role === 'STUDENT'">删除</el-button>
-            <el-button plain type="primary" size="mini" @click="handleCheck(scope.row)" v-if="user.role === 'TEACHER'">打分</el-button>
+            <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini" v-if="user.role === 'STUDENT'">编辑</el-button>
+            <el-button plain type="danger" size="mini" @click=del(scope.row.id) >删除</el-button>
+            <el-button plain type="primary" size="mini" @click="handleCheck(scope.row)" v-if="user.role !== 'STUDENT'">打分</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -55,8 +55,8 @@
         </el-form-item>
         <el-form-item prop="courseId" label="选择课程">
           <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%">
-<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.courseId"></el-option>-->
-            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.courseId"></el-option>
+            <el-option v-for="item in courseData" :label="item.name" :value="item.courseId"></el-option>
+<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.courseId"></el-option>-->
           </el-select>
         </el-form-item>
         <el-form-item label="作业文件">
@@ -101,11 +101,11 @@ export default {
   data() {
     return {
       tableData: [
-        { id: 1, content: "第一次作业：请完成设计模式的学习", studentName: "张三", courseName: "软件协同设计", teacherName: "曹教授", file: "file1.pdf", score: 85, descr: "良好" },
-        { id: 2, content: "第二次作业：数据库基础练习", studentName: "李四", courseName: "软件协同设计", teacherName: "曹教授", file: "file2.pdf", score: 92, descr: "优秀" },
-        { id: 3, content: "第三次作业：前端HTML页面设计", studentName: "王五", courseName: "软件协同设计", teacherName: "曹教授", file: "file3.pdf", score: 78, descr: "合格" },
-        { id: 4, content: "第四次作业：Java基础知识测试", studentName: "赵六", courseName: "软件协同设计", teacherName: "曹教授", file: "file4.pdf", score: 88, descr: "良好" },
-        { id: 5, content: "第五次作业：网络协议分析", studentName: "孙七", courseName: "软件协同设计", teacherName: "曹教授", file: "file5.pdf", score: 95, descr: "优秀" },
+        // { id: 1, content: "第一次作业：请完成设计模式的学习", studentName: "张三", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 85, descr: "良好" },
+        // { id: 2, content: "第二次作业：数据库基础练习", studentName: "李四", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 92, descr: "优秀" },
+        // { id: 3, content: "第三次作业：前端HTML页面设计", studentName: "王五", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 78, descr: "合格" },
+        // { id: 4, content: "第四次作业：Java基础知识测试", studentName: "赵六", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 88, descr: "良好" },
+        // { id: 5, content: "第五次作业：网络协议分析", studentName: "孙七", courseName: "软件协同设计", teacherName: "曹教授", file: "http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg", score: 95, descr: "优秀" },
         // 更多数据...
       ],  // 所有的数据
       pageNum: 1,   // 当前的页码
@@ -126,11 +126,11 @@ export default {
       },
       ids: [],
       courseData: [
-        { name: "软件协同设计", value: "1" },
-        { name: "数据库原理", value: "2" },
-        { name: "前端技术", value: "3" },
-        { name: "Java编程", value: "4" },
-        { name: "计算机网络", value: "5" },
+        // { name: "软件协同设计", value: "1" },
+        // { name: "数据库原理", value: "2" },
+        // { name: "前端技术", value: "3" },
+        // { name: "Java编程", value: "4" },
+        // { name: "计算机网络", value: "5" },
       ]
     }
   },
@@ -207,30 +207,30 @@ export default {
       }).catch(() => {
       })
     },
-    // load(pageNum) {  // 分页查询
-    //   if (pageNum) this.pageNum = pageNum
-    //   this.$request.get('/homework/selectPage', {
-    //     params: {
-    //       pageNum: this.pageNum,
-    //       pageSize: this.pageSize,
-    //       content: this.content,
-    //     }
-    //   }).then(res => {
-    //     this.tableData = res.data?.list
-    //     this.total = res.data?.total
-    //   })
-    // },
-    load(pageNum) {
-      if (pageNum) this.pageNum = pageNum;
-      let data = this.tableData;
-      if (this.content) {
-        data = data.filter(item => item.content.includes(this.content));
-      }
-      this.total = data.length;
-      const start = (this.pageNum - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      this.tableData = data.slice(start, end);
+    load(pageNum) {  // 分页查询
+      if (pageNum) this.pageNum = pageNum
+      this.$request.get('/homework/selectPage', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          content: this.content,
+        }
+      }).then(res => {
+        this.tableData = res.data?.list
+        this.total = res.data?.total
+      })
     },
+    // load(pageNum) {
+    //   if (pageNum) this.pageNum = pageNum;
+    //   let data = this.tableData;
+    //   if (this.content) {
+    //     data = data.filter(item => item.content.includes(this.content));
+    //   }
+    //   this.total = data.length;
+    //   const start = (this.pageNum - 1) * this.pageSize;
+    //   const end = start + this.pageSize;
+    //   this.tableData = data.slice(start, end);
+    // },
 
     reset() {
       this.content = null

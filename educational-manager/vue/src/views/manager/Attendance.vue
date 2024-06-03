@@ -2,8 +2,8 @@
   <div>
     <div class="search">
       <el-select v-model="courseId" placeholder="请选择课程" style="width: 200px">
-<!--        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.id"></el-option>-->
-        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.value" :key="item.id"></el-option>
+        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.id"></el-option>
+<!--        <el-option v-for="item in courseSearchData" :label="item.name" :value="item.value" :key="item.id"></el-option>-->
       </el-select>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
@@ -50,14 +50,14 @@
       <el-form label-width="100px" style="padding-right: 50px" :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="courseId" label="选择课程">
           <el-select v-model="form.courseId" placeholder="请选择课程" style="width: 100%" @change="getStudent">
-<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>-->
-            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.id"></el-option>
+            <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>
+<!--            <el-option v-for="item in courseData" :label="item.name" :value="item.value" :key="item.id"></el-option>-->
           </el-select>
         </el-form-item>
         <el-form-item prop="studentId" label="选择学生">
           <el-select v-model="studentId" placeholder="请选择学生" style="width: 100%">
-<!--            <el-option v-for="item in studentData" :label="item.studentName" :value="item.studentId"></el-option>-->
-            <el-option v-for="item in studentData" :label="item.studentName" :value="item.value" :key="item.studentId"></el-option>
+            <el-option v-for="item in studentData" :label="item.studentName" :value="item.studentId"></el-option>
+<!--            <el-option v-for="item in studentData" :label="item.studentName" :value="item.value" :key="item.studentId"></el-option>-->
           </el-select>
         </el-form-item>
         <el-form-item prop="time" label="上课时间">
@@ -93,11 +93,11 @@ export default {
   data() {
     return {
       tableData: [
-        { id: 1, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生A", time: "2023-09-01", status: "正常" },
-        { id: 2, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生B", time: "2023-09-01", status: "迟到" },
-        { id: 3, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生C", time: "2023-09-02", status: "早退" },
-        { id: 4, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生D", time: "2023-09-02", status: "缺勤" },
-        { id: 5, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生E", time: "2023-09-03", status: "正常" },
+        // { id: 1, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生A", time: "2023-09-01", status: "正常" },
+        // { id: 2, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生B", time: "2023-09-01", status: "迟到" },
+        // { id: 3, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生C", time: "2023-09-02", status: "早退" },
+        // { id: 4, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生D", time: "2023-09-02", status: "缺勤" },
+        // { id: 5, courseName: "软件协同设计", teacherName: "曹教授", studentName: "学生E", time: "2023-09-03", status: "正常" },
         // 更多模拟数据...
       ],  // 所有的数据
       pageNum: 1,   // 当前的页码
@@ -256,30 +256,30 @@ export default {
       }).catch(() => {
       })
     },
-    // load(pageNum) {  // 分页查询
-    //   if (pageNum) this.pageNum = pageNum
-    //   this.$request.get('/attendance/selectPage', {
-    //     params: {
-    //       pageNum: this.pageNum,
-    //       pageSize: this.pageSize,
-    //       courseId: this.courseId,
-    //     }
-    //   }).then(res => {
-    //     this.tableData = res.data?.list
-    //     this.total = res.data?.total
-    //   })
-    // },
-    load(pageNum) {
-      if (pageNum) this.pageNum = pageNum;
-      let data = this.tableData;
-      if (this.courseId) {
-        data = data.filter(item => item.courseId === this.courseId);
-      }
-      this.total = data.length;
-      const start = (this.pageNum - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      this.tableData = data.slice(start, end);
+    load(pageNum) {  // 分页查询
+      if (pageNum) this.pageNum = pageNum
+      this.$request.get('/attendance/selectPage', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          courseId: this.courseId,
+        }
+      }).then(res => {
+        this.tableData = res.data?.list
+        this.total = res.data?.total
+      })
     },
+    // load(pageNum) {
+    //   if (pageNum) this.pageNum = pageNum;
+    //   let data = this.tableData;
+    //   if (this.courseId) {
+    //     data = data.filter(item => item.courseId === this.courseId);
+    //   }
+    //   this.total = data.length;
+    //   const start = (this.pageNum - 1) * this.pageSize;
+    //   const end = start + this.pageSize;
+    //   this.tableData = data.slice(start, end);
+    // },
 
     reset() {
       this.courseId = null
