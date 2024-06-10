@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 作业信息表业务处理
+ * 课程资料表业务处理
  **/
 @Service
 public class TestService {

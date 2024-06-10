@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.TestMapper">
 
     <sql id="Base_Column_List">
-        id,student_id,content,course_id,teacher_id,file,score,descr
+        id,student_id,content,course_id,teacher_id,file,start_date,end_date
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Test">
@@ -44,8 +44,8 @@
             <if test="courseId != null">course_id,</if>
             <if test="teacherId != null">teacher_id,</if>
             <if test="file != null">file,</if>
-            <if test="score != null">score,</if>
-            <if test="descr != null">descr,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -54,8 +54,8 @@
             <if test="courseId != null">#{courseId},</if>
             <if test="teacherId != null">#{teacherId},</if>
             <if test="file != null">#{file},</if>
-            <if test="score != null">#{score},</if>
-            <if test="descr != null">#{descr},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
         </trim>
     </insert>
 
@@ -77,11 +77,11 @@
             <if test="file != null">
                 file = #{file},
             </if>
-            <if test="score != null">
-                score = #{score},
+            <if test="startDate != null">
+                start_date = #{startDate},
             </if>
-            <if test="descr != null">
-                descr = #{descr},
+            <if test="endDate != null">
+                end_date = #{endDate},
             </if>
         </set>
         where id = #{id}

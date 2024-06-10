@@ -5,7 +5,7 @@ import com.example.entity.Test;
 import java.util.List;
 
 /**
- * 操作Homework相关数据接口
+ * 操作Data相关数据接口
  */
 public interface TestMapper {
 

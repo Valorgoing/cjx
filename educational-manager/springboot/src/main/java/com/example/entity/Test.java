@@ -1,10 +1,13 @@
 package com.example.entity;
 
 
+import cn.hutool.core.date.DateTime;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * 作业信息表
+ * 任务信息表
  */
 public class Test implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,8 +19,8 @@ public class Test implements Serializable {
     private Integer studentId;
     private Integer teacherId;
     private String file;
-    private String score;
-    private String descr;
+    private Date startDate;
+    private Date endDate;
 
     private String courseName;
     private String studentName;
@@ -71,20 +74,20 @@ public class Test implements Serializable {
         this.file = file;
     }
 
-    public String getScore() {
-        return score;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setScore(String score) {
-        this.score = score;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public String getDescr() {
-        return descr;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setDescr(String descr) {
-        this.descr = descr;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getCourseName() {

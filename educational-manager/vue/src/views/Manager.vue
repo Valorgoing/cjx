@@ -3,7 +3,7 @@
     <!--  头部  -->
     <div class="manager-header">
       <div class="manager-header-left">
-        <img src="@/assets/imgs/logo.png" />
+        <img src="@/assets/imgs/logo.png"/>
         <div class="title" style="font-size:18px;">课程过程管理系统</div>
       </div>
 
@@ -17,8 +17,8 @@
       <div class="manager-header-right">
         <el-dropdown placement="bottom">
           <div class="avatar">
-            <img :src="user.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
-            <div>{{ user.name ||  '管理员' }}</div>
+            <img :src="user.avatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"/>
+            <div>{{ user.name || '管理员' }}</div>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="goToPerson">个人信息</el-dropdown-item>
@@ -38,15 +38,16 @@
             <i class="el-icon-s-home"></i>
             <span slot="title">系统首页</span>
           </el-menu-item>
-          <el-submenu index="info">
+
+          <!--  管理员  -->
+          <el-submenu index="info" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>信息公告</span>
             </template>
-
-            <el-menu-item index="/notice" >公告信息</el-menu-item>
+            <el-menu-item index="/notice">公告信息</el-menu-item>
             <el-menu-item index="/examPlan">考试安排</el-menu-item>
           </el-submenu>
-          <el-submenu index="administration">
+          <el-submenu index="administration" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>行政管理</span>
             </template>
@@ -55,26 +56,34 @@
             <el-menu-item index="/roomPlan">教室安排</el-menu-item>
             <el-menu-item index="/classes">班级信息</el-menu-item>
           </el-submenu>
-          <el-submenu index="teach">
+          <el-submenu index="teach" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>教学管理</span>
             </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
-            <el-menu-item index="/myCourse">我的课程</el-menu-item>
-            <el-menu-item index="/test">小组报告提交与评分</el-menu-item>
-            <el-menu-item index="/group">小组成员管理</el-menu-item>
-            <el-menu-item index="/choice" v-if="user.role === 'STUDENT'">我的选课</el-menu-item>
-            <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
+            <el-menu-item index="/data">课程资料</el-menu-item>
+<!--            <el-menu-item index="/myCourse">课程信息</el-menu-item>-->
+            <!--            <el-menu-item index="/test">小组报告提交与评分</el-menu-item>-->
+            <!--            <el-menu-item index="/group">小组成员管理</el-menu-item>-->
+            <el-menu-item index="/choice">选课管理</el-menu-item>
+            <!--            <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>-->
             <el-menu-item index="/score">我的成绩</el-menu-item>
+            <!--            <el-menu-item index="/score" v-if="user.role === 'STUDENT'">-->
+            <!--              <i class="el-icon-document"></i><span slot="title">我的成绩</span>-->
+            <!--            </el-menu-item>-->
+            <!--            <el-menu-item index="/score" v-else-if="user.role === 'TEACHER'">-->
+            <!--              <i class="el-icon-document"></i><span slot="title">班级成绩</span>-->
+            <!--            </el-menu-item>-->
             <el-menu-item index="/comment">网上评教</el-menu-item>
           </el-submenu>
-          <el-submenu index="educational">
+          <el-submenu index="educational" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>教务管理</span>
             </template>
-            <el-menu-item index="/apply" v-if="user.role!=='TEACHER'">请假申请</el-menu-item>
+            <el-menu-item index="/apply">请假申请</el-menu-item>
             <el-menu-item index="/homework">作业提交</el-menu-item>
             <el-menu-item index="/attendance">考勤信息</el-menu-item>
+            <el-menu-item index="/test">任务发布</el-menu-item>
           </el-submenu>
           <el-submenu index="user" v-if="user.role==='ADMIN'">
             <template slot="title">
@@ -84,25 +93,95 @@
             <el-menu-item index="/teacher">教师信息</el-menu-item>
             <el-menu-item index="/student">学生信息</el-menu-item>
           </el-submenu>
-
-
           <!-- 新增聊天室 --->
-          <el-menu-item index="/chatroom">
+          <el-menu-item index="/chatroom" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>聊天室</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="/logs">
+          <el-menu-item index="/logs" v-if="user.role === 'ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>日志管理</span>
             </template>
           </el-menu-item>
+
+          <!--  学生  -->
+          <el-submenu index="curse" v-if="user.role === 'STUDENT'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>课程管理</span>
+            </template>
+            <el-menu-item index="/course">课程信息</el-menu-item>
+            <el-menu-item index="/myCourse">我的课程</el-menu-item>
+            <el-menu-item index="/curriculum">我的课表</el-menu-item>
+            <el-menu-item index="/choice">我的选课</el-menu-item>
+          </el-submenu>
+          <el-submenu index="study" v-if="user.role === 'STUDENT'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>学习活动</span>
+            </template>
+            <el-menu-item index="/homework">作业提交</el-menu-item>
+            <el-menu-item index="/data">课程资料</el-menu-item>
+            <el-menu-item index="/test">我的任务</el-menu-item>
+            <el-menu-item index="/group">小组成员管理</el-menu-item>
+            <el-menu-item index="/comment">网上评教</el-menu-item>
+            <el-menu-item index="/chatroom">聊天室</el-menu-item>
+          </el-submenu>
+          <el-submenu index="thing" v-if="user.role === 'STUDENT'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>个人事务管理</span>
+            </template>
+            <el-menu-item index="/score">我的成绩</el-menu-item>
+            <el-menu-item index="/attendance">我的考勤</el-menu-item>
+            <el-menu-item index="/apply">我的请假</el-menu-item>
+          </el-submenu>
+          <!--  教师  -->
+          <el-submenu index="curse" v-if="user.role === 'TEACHER'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>课程管理</span>
+            </template>
+            <el-menu-item index="/myCourse">课程信息</el-menu-item>
+            <el-menu-item index="/curriculum">课表管理</el-menu-item>
+            <el-menu-item index="/curriculum" v-if="user.role === 'STUDENT'">我的课表</el-menu-item>
+
+          </el-submenu>
+          <el-submenu index="study" v-if="user.role === 'TEACHER'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>教学活动</span>
+            </template>
+            <el-menu-item index="/homework">作业管理</el-menu-item>
+            <el-menu-item index="/data">课程资料</el-menu-item>
+            <el-menu-item index="/test">任务发布</el-menu-item>
+            <el-menu-item index="/comment">评教管理</el-menu-item>
+            <el-menu-item index="/chatroom">聊天室</el-menu-item>
+            <el-menu-item index="/score">成绩管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="student" v-if="user.role === 'TEACHER'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>学生管理</span>
+            </template>
+            <el-menu-item index="/score">班级成绩</el-menu-item>
+            <el-menu-item index="/group">小组成员管理</el-menu-item>
+          </el-submenu>
+          <el-submenu index="commute" v-if="user.role === 'TEACHER'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>互动与沟通</span>
+            </template>
+            <el-menu-item index="/notice">公告信息</el-menu-item>
+            <el-menu-item index="/examPlan">考试安排</el-menu-item>
+          </el-submenu>
+          <el-submenu index="attendance" v-if="user.role === 'TEACHER'">
+            <template slot="title">
+              <i class="el-icon-menu"></i><span>请假审批与考勤</span>
+            </template>
+            <el-menu-item index="/attendance">考勤记录</el-menu-item>
+            <el-menu-item index="/apply">请假审批</el-menu-item>
+          </el-submenu>
         </el-menu>
       </div>
 
       <!--  数据表格  -->
       <div class="manager-main-right">
-        <router-view @update:user="updateUser" />
+        <router-view @update:user="updateUser"/>
       </div>
     </div>
 
@@ -118,6 +197,7 @@ export default {
     }
   },
   created() {
+    console.log(this.user.role); // 检查角色值是否预期
     if (!this.user.id) {
       this.$router.push('/login')
     }

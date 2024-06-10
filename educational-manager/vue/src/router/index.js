@@ -32,7 +32,7 @@ const routes = [
       { path: 'speciality', name: 'Speciality', meta: { name: '专业信息' }, component: () => import('../views/manager/Speciality') },
       { path: 'classes', name: 'Classes', meta: { name: '班级信息' }, component: () => import('../views/manager/Classes') },
       { path: 'course', name: 'Course', meta: { name: '课程信息' }, component: () => import('../views/manager/Course') },
-      { path: 'test', name: 'Test', meta: { name: '小组报告与评分' }, component: () => import('../views/manager/Test.vue') },
+      { path: 'test', name: 'Test', meta: { name: '课程任务' }, component: () => import('../views/manager/Test.vue') },
       { path: 'group', name: 'Group', meta: { name: '小组成员信息' }, component: () => import('../views/manager/Group.vue') },
       { path: 'myCourse', name: 'MyCourse', meta: { name: '我的课程' }, component: () => import('../views/manager/MyCourse') },
       { path: 'choice', name: 'Choice', meta: { name: '我的选课' }, component: () => import('../views/manager/Choice') },
@@ -44,6 +44,8 @@ const routes = [
       { path: 'attendance', name: 'Attendance', meta: { name: '考勤信息' }, component: () => import('../views/manager/Attendance') },
       { path: 'logs', name: 'Logs', meta: { name: '日志管理' }, component: () => import('../views/manager/Logs') },
       { path: 'chatroom', name: 'Chatroom', meta: { name: '聊天室' }, component: () => import('../views/manager/Chatroom') },
+      { path: 'test', name: 'Test', meta: { name: 'test' }, component: () => import('../views/manager/Test') },
+      { path: 'data', name: 'Data', meta: { name: '课程资料' }, component: () => import('../views/manager/Data') },
     ]
   },
   {

@@ -1,18 +1,17 @@
 package com.example.controller;
 
 import com.example.common.Result;
-import com.example.entity.Classes;
 import com.example.entity.Test;
-import com.example.service.ClassesService;
 import com.example.service.TestService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 作业信息表前端操作接口
+ * 课程资料表前端操作接口
  **/
 @RestController
 @RequestMapping("/test")
@@ -25,7 +24,7 @@ public class TestController {
      * 新增
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Test test) {
+    public Result add(@RequestBody  Test test) {
         testService.add(test);
         return Result.success();
     }
