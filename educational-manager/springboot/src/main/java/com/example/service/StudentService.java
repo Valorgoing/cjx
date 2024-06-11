@@ -2,11 +2,14 @@ package com.example.service;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Constants;
+import com.example.common.enums.LevelEnum;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
+import com.example.entity.Department;
 import com.example.entity.Student;
 import com.example.exception.CustomException;
+import com.example.mapper.DepartmentMapper;
 import com.example.mapper.StudentMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -25,6 +28,8 @@ public class StudentService {
 
     @Resource
     private StudentMapper studentMapper;
+    @Resource
+    private DepartmentMapper departmentMapper;
 
     /**
      * 新增
@@ -87,9 +92,16 @@ public class StudentService {
     public PageInfo<Student> selectPage(Student student, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Student> list = studentMapper.selectAll(student);
+        for (Student dbUser : list) {
+            if (ObjectUtil.isNotEmpty(dbUser.getLevel()) && LevelEnum.HEADER.level.equals(dbUser.getLevel())) {
+                Department department = departmentMapper.selectByUserId(dbUser.getId());
+                if (ObjectUtil.isNotEmpty(department)) {
+                    dbUser.setDepartmentName(department.getName());
+                }
+            }
+        }
         return PageInfo.of(list);
     }
-
     /**
      * 登录
      */
@@ -127,5 +139,9 @@ public class StudentService {
         }
         dbStudent.setPassword(account.getNewPassword());
         studentMapper.updateById(dbStudent);
+    }
+
+    public List<Student> getAllHeaders() {
+        return studentMapper.selectAllHeaders();
     }
 }

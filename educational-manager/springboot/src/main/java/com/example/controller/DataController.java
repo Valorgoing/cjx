@@ -68,10 +68,21 @@ public class DataController {
     /**
      * 查询所有
      */
+//    @GetMapping("/selectAll")
+//    public Result selectAll(Data data ) {
+//        List<Data> list = dataService.selectAll(data);
+//        return Result.success(list);
+//    }
     @GetMapping("/selectAll")
-    public Result selectAll(Data data ) {
-        List<Data> list = dataService.selectAll(data);
-        return Result.success(list);
+    public Result selectAll(Data data,
+                            @RequestParam(required = false) Integer courseId, // 添加课程ID作为参数
+                            @RequestParam(defaultValue = "1") Integer pageNum,
+                            @RequestParam(defaultValue = "10") Integer pageSize) {
+        if (courseId != null) {
+            data.setCourseId(courseId); // 设置课程ID
+        }
+        PageInfo<Data> page = dataService.selectPage(data, pageNum, pageSize);
+        return Result.success(page);
     }
 
     /**

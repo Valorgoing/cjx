@@ -17,7 +17,9 @@ public enum ResultCodeEnum {
     COURSE_NUM_ERROR("5006", "该门课选课人数已满，请选择其他课程"),
     SCORE_ALREADY_ERROR("5007","您已经录入了该学生该门课的成绩了"),
     COMMENT_ALREADY_ERROR("5008","您已经对该门课的老师评教过了，请勿重复评教"),
-    ATTENDANCE_ALREADY_ERROR("5009","该学生当天的考勤已录入，请勿重复登录")
+    ATTENDANCE_ALREADY_ERROR("5009","该学生当天的考勤已录入，请勿重复登录"),
+    HEADER_ALREADY_ERROR("5010", "该用户已经担任其他小组组长了"),
+    APPLY_ALREADY_ERROR("5011","已申请"),
     ;
 
     public String code;

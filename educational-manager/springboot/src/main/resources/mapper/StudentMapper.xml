@@ -21,6 +21,8 @@
             <if test="name != null">and name= #{name}</if>
             <if test="avatar != null">and avatar= #{avatar}</if>
             <if test="role != null">and role= #{role}</if>
+            <if test="level != null"> and level= #{level}</if>
+            <if test="departmentId != null"> and department_id= #{departmentId}</if>
         </where>
     </select>
 
@@ -30,7 +32,6 @@
         from student
         where id = #{id}
     </select>
-
     <delete id="deleteById">
         delete from student
         where  id = #{id}
@@ -49,6 +50,8 @@
             <if test="specialityId != null">spaciality_id,</if>
             <if test="classId != null">class_id,</if>
             <if test="score != null">score,</if>
+            <if test="level != null">level,</if>
+            <if test="departmentId != null">department_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -61,6 +64,8 @@
             <if test="specialityId != null">#{specialityId},</if>
             <if test="classId != null">#{classId},</if>
             <if test="score != null">#{score},</if>
+            <if test="level != null">#{level},</if>
+            <if test="departmentId != null">#{departmentId},</if>
         </trim>
     </insert>
     <!--college_id,spaciality_id,class_id,score-->
@@ -93,6 +98,12 @@
             </if>
             <if test="score != null">
                 score = #{score},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId},
             </if>
         </set>
         where id = #{id}

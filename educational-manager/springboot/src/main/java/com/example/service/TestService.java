@@ -1,11 +1,9 @@
 package com.example.service;
 
-import com.example.common.enums.RoleEnum;
 import com.example.entity.*;
 import com.example.mapper.CourseMapper;
 import com.example.mapper.TestMapper;
 import com.example.mapper.TeacherMapper;
-import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -76,17 +74,23 @@ public class TestService {
     /**
      * 分页查询
      */
+//    public PageInfo<Test> selectPage(Test test, Integer pageNum, Integer pageSize) {
+//        Account currentUser = TokenUtils.getCurrentUser();
+//        if (RoleEnum.STUDENT.name().equals(currentUser.getRole())) {
+//            test.setStudentId(currentUser.getId());
+//        }
+//        if (RoleEnum.TEACHER.name().equals(currentUser.getRole())) {
+//            test.setTeacherId(currentUser.getId());
+//        }
+//        PageHelper.startPage(pageNum, pageSize);
+//        List<Test> list = testMapper.selectAll(test);
+//        return PageInfo.of(list);
+//    }
+
     public PageInfo<Test> selectPage(Test test, Integer pageNum, Integer pageSize) {
-        Account currentUser = TokenUtils.getCurrentUser();
-        if (RoleEnum.STUDENT.name().equals(currentUser.getRole())) {
-            test.setStudentId(currentUser.getId());
-        }
-        if (RoleEnum.TEACHER.name().equals(currentUser.getRole())) {
-            test.setTeacherId(currentUser.getId());
-        }
+        // 移除对学生ID和教师ID的设置，改为直接使用课程ID进行查询
         PageHelper.startPage(pageNum, pageSize);
         List<Test> list = testMapper.selectAll(test);
         return PageInfo.of(list);
     }
-
 }

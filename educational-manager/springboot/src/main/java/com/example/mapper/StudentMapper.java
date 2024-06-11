@@ -37,4 +37,7 @@ public interface StudentMapper {
 
     @Select("select * from student where username = #{username}")
     Student selectByUsername(String username);
+
+    @Select("SELECT id, name FROM student")
+    List<Student> selectAllHeaders();
 }

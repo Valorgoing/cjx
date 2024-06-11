@@ -9,6 +9,7 @@
     <div class="operation">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+      <el-button type="warning" plain @click="applyRole">申请经理</el-button>
     </div>
 
     <div class="table">
@@ -25,11 +26,11 @@
         </el-table-column>
         <el-table-column prop="username" label="账号"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="role" label="角色"></el-table-column>
+        <el-table-column prop="level" label="角色"></el-table-column>
         <el-table-column prop="collegeName" label="学院"></el-table-column>
         <el-table-column prop="specialityName" label="专业"></el-table-column>
         <el-table-column prop="className" label="班级"></el-table-column>
-        <el-table-column prop="score" label="学分"></el-table-column>
+<!--        <el-table-column prop="score" label="学分"></el-table-column>-->
         <el-table-column label="操作" align="center" width="180">
           <template v-slot="scope">
             <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
@@ -79,7 +80,7 @@
         </el-form-item>
         <el-form-item label="角色" prop="roleId">
           <el-select v-model="form.roleId" placeholder="请选择角色" style="width: 100%">
-            <el-option v-for="role in roleData" :label="role.name" :value="role.value" :key="role.id"></el-option>
+            <el-option v-for="level in roleData" :label="level.name" :value="level.value" :key="level.id"></el-option>
           </el-select>
         </el-form-item>
 
@@ -151,11 +152,11 @@ export default {
         { id: '3', name: '英语一班', value: '3' }
       ],
       tableData: [
-        { id: '1', avatar: 'http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg', username: 'ccc', name: '陈陈陈', role: '开发经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
-        { id: '2', avatar: 'http://localhost:9091/files/1714838192012-s34647971.jpg', username: 'kkkkk', name: 'kk', role: '测试经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
-        { id: '3', avatar: 'http://localhost:9091/files/1715568003363-32b54f04737c4c24a009b6b44379002d.jpeg.webp', username: 'lili', name: '李', role: '质量经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
-        { id: '4', avatar: 'http://localhost:9091/files/1715568003363-32b54f04737c4c24a009b6b44379002d.jpeg.webp', username: 'nnnn', name: 'nn', role: '计划经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
-        { id: '5', avatar: 'http://localhost:9091/files/1715568003363-32b54f04737c4c24a009b6b44379002d.jpeg.webp', username: 'opo', name: 'opo', role: '产品经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' }
+        { id: '1', avatar: 'http://localhost:9091/files/1714805298340-pexels-vurzie-kim-21194857.jpg', username: 'ccc', name: '陈陈陈', level: '开发经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
+        { id: '2', avatar: 'http://localhost:9091/files/1714838192012-s34647971.jpg', username: 'kkkkk', name: 'kk', level: '测试经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
+        { id: '3', avatar: 'http://localhost:9091/files/1715568003363-32b54f04737c4c24a009b6b44379002d.jpeg.webp', username: 'lili', name: '李', level: '质量经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
+        { id: '4', avatar: 'http://localhost:9091/files/1715568003363-32b54f04737c4c24a009b6b44379002d.jpeg.webp', username: 'nnnn', name: 'nn', level: '计划经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' },
+        { id: '5', avatar: 'http://localhost:9091/files/1715568003363-32b54f04737c4c24a009b6b44379002d.jpeg.webp', username: 'opo', name: 'opo', level: '产品经理', collegeName: '计算机学院', specialityName: '软件工程', className: '软件一班', score: '3' }
       ],
 
     }

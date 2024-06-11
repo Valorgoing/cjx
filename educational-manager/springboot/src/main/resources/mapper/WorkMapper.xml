@@ -1,0 +1,84 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.WorkMapper">
+
+    <sql id="Base_Column_List">
+        id, assigner_student_id, content, course_id, file, start_date, end_date
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Work">
+        select
+        work.*,
+        assigner.name as assignerName,
+        course.name as courseName
+        from work
+        left join student as assigner on work.assigner_student_id = assigner.id
+        left join course on work.course_id = course.id
+        <where>
+            <if test="courseId != null"> and work.course_id = #{courseId}</if>
+            <if test="content != null"> and work.content like concat('%', #{content}, '%')</if>
+        </where>
+        order by work.start_date desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Work">
+        select
+        <include refid="Base_Column_List" />
+        from work
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from work
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Work" useGeneratedKeys="true">
+        insert into work
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="assignerStudentId != null">assigner_student_id,</if>
+            <if test="content != null">content,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="file != null">file,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="assignerStudentId != null">#{assignerStudentId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="file != null">#{file},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Work">
+        update work
+        <set>
+            <if test="assignerStudentId != null">
+                assigner_student_id = #{assignerStudentId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+            <if test="file != null">
+                file = #{file},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

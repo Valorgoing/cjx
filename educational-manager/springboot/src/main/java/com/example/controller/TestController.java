@@ -4,7 +4,6 @@ import com.example.common.Result;
 import com.example.entity.Test;
 import com.example.service.TestService;
 import com.github.pagehelper.PageInfo;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -68,10 +67,22 @@ public class TestController {
     /**
      * 查询所有
      */
+//    @GetMapping("/selectAll")
+//    public Result selectAll(Test test ) {
+//        List<Test> list = testService.selectAll(test);
+//        return Result.success(list);
+//    }
+
     @GetMapping("/selectAll")
-    public Result selectAll(Test test ) {
-        List<Test> list = testService.selectAll(test);
-        return Result.success(list);
+    public Result selectAll(Test test,
+                            @RequestParam(required = false) Integer courseId, // 添加课程ID作为参数
+                            @RequestParam(defaultValue = "1") Integer pageNum,
+                            @RequestParam(defaultValue = "10") Integer pageSize) {
+        if (courseId != null) {
+            test.setCourseId(courseId); // 设置课程ID
+        }
+        PageInfo<Test> page = testService.selectPage(test, pageNum, pageSize);
+        return Result.success(page);
     }
 
     /**

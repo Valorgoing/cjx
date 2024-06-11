@@ -22,6 +22,16 @@ public class Course implements Serializable {
 
     private String teacherName;
 
+    private String phase;
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
     public Integer getId() {
         return id;
     }

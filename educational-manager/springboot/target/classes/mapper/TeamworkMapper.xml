@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TeamworkMapper">
+
+    <sql id="Base_Column_List">
+--         id, student_id, content, course_id, file, descr, department_id
+        id, student_id, content, course_id, file, descr
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Teamwork">
+        select teamwork.*, student.name as studentName, course.name as courseName
+        from teamwork
+        left join student on teamwork.student_id = student.id
+        left join course on teamwork.course_id = course.id
+        <where>
+            <if test="id != null"> and teamwork.id = #{id}</if>
+            <if test="content != null"> and teamwork.content like concat('%', #{content}, '%')</if>
+            <if test="studentId != null"> and teamwork.student_id = #{studentId}</if>
+<!--            <if test="departmentId != null"> and student.department_id = #{departmentId}</if>  &lt;!&ndash; 使用student.department_id &ndash;&gt;-->
+        </where>
+        order by teamwork.id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Teamwork">
+        select
+        <include refid="Base_Column_List" />
+        from teamwork
+        where teamwork.id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from teamwork
+        where teamwork.id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Teamwork" useGeneratedKeys="true" keyProperty="id">
+        insert into teamwork
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="studentId != null">student_id,</if>
+            <if test="content != null">content,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="file != null">file,</if>
+            <if test="descr != null">descr,</if>
+<!--            <if test="departmentId != null">department_id,</if>  &lt;!&ndash; 新增departmentId字段 &ndash;&gt;-->
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="studentId != null">#{studentId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="file != null">#{file},</if>
+            <if test="descr != null">#{descr},</if>
+<!--            <if test="departmentId != null">#{departmentId},</if>  &lt;!&ndash; 新增departmentId字段 &ndash;&gt;-->
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Teamwork">
+        update teamwork
+        <set>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+            <if test="file != null">
+                file = #{file},
+            </if>
+            <if test="descr != null">
+                descr = #{descr},
+            </if>
+<!--            <if test="departmentId != null">-->
+<!--                department_id = #{departmentId},-->
+<!--            </if>  &lt;!&ndash; 新增departmentId字段 &ndash;&gt;-->
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

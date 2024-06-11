@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.BpplyMapper">
+
+    <sql id="Base_Column_List">
+        id,user_id,department_id,description,process,status,note
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Bpply">
+        select bpply.*, user.name as userName, department.name as departmentName
+        from bpply
+        left join user on bpply.user_id = user.id
+        left join department on bpply.department_id = department.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="userId != null"> and user_id = #{userId}</if>
+            <if test="departmentId != null"> and department_id= #{departmentId}</if>
+            <if test="description != null"> and description= #{description}</if>
+            <if test="process != null"> and process= #{process}</if>
+            <if test="status != null"> and status= #{status}</if>
+            <if test="note != null"> and note= #{note}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Bpply">
+        select
+        <include refid="Base_Column_List" />
+        from bpply
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from bpply
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Bpply" useGeneratedKeys="true">
+        insert into bpply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="departmentId != null">department_id,</if>
+            <if test="description != null">description,</if>
+            <if test="process != null">process,</if>
+            <if test="status != null">status,</if>
+            <if test="note != null">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="process != null">#{process},</if>
+            <if test="status != null">#{status},</if>
+            <if test="note != null">#{note},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Bpply">
+        update bpply
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="process != null">
+                process = #{process},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="note != null">
+                note = #{note},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

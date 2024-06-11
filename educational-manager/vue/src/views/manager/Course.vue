@@ -6,7 +6,7 @@
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
-    <div class="operation" v-if="user.role==='ADMIN'">
+    <div class="operation" v-if="user.role !== 'STUDENT'">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
@@ -16,20 +16,21 @@
         <el-table-column type="selection" width="55" align="center" v-if="user.role==='ADMIN'"></el-table-column>
         <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
         <el-table-column prop="name" label="课程名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="type" label="课程类型" show-overflow-tooltip></el-table-column>
+<!--        <el-table-column prop="type" label="课程类型" show-overflow-tooltip></el-table-column>-->
         <el-table-column prop="teacherName" label="授课教师" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="score" label="学分" show-overflow-tooltip></el-table-column>
+<!--        <el-table-column prop="score" label="学分" show-overflow-tooltip></el-table-column>-->
         <el-table-column prop="num" label="上课人数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="room" label="上课教室" show-overflow-tooltip></el-table-column>
         <el-table-column prop="week" label="周几" show-overflow-tooltip></el-table-column>
         <el-table-column prop="segment" label="第几大节" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="上课状态" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="phase" label="课程阶段" show-overflow-tooltip></el-table-column>
 
         <el-table-column label="操作" width="180" align="center" >
           <template v-slot="scope">
             <el-button plain type="primary" @click="handleEdit(scope.row)" size="mini" v-if="user.role!=='STUDENT'">编辑</el-button>
             <el-button plain type="primary" @click="choiceCourse(scope.row)" size="mini" v-if="user.role === 'STUDENT'" :disabled="scope.row.status!=='未开课'">选课</el-button>
-            <el-button plain type="danger" size="mini" @click=del(scope.row.id) v-if="user.role ==='ADMIN'">删除</el-button>
+            <el-button plain type="danger" size="mini" @click=del(scope.row.id) v-if="user.role !=='STUDENT'">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -53,12 +54,12 @@
         <el-form-item prop="name" label="课程名称">
           <el-input v-model="form.name" autocomplete="off" :disabled="user.role!=='ADMIN'"></el-input>
         </el-form-item>
-        <el-form-item prop="type" label="课程类型">
-          <el-select v-model="form.type" placeholder="请选择类型" style="width: 100%" :disabled="user.role!=='ADMIN'">
-            <el-option label="必修" value="必修"></el-option>
-            <el-option label="选修" value="选修"></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item prop="type" label="课程类型">-->
+<!--          <el-select v-model="form.type" placeholder="请选择类型" style="width: 100%" :disabled="user.role!=='ADMIN'">-->
+<!--            <el-option label="必修" value="必修"></el-option>-->
+<!--            <el-option label="选修" value="选修"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item prop="teacherId" label="授课教师">
           <el-select v-model="form.teacherId" placeholder="请选择教师" style="width: 100%"
                      :disabled="user.role!=='ADMIN'">
@@ -66,9 +67,9 @@
             <el-option v-for="item in teacherData" :label="item.name" :value="item.value" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="score" label="学分">
-          <el-input v-model="form.score" autocomplete="off" :disabled="user.role!=='ADMIN'"></el-input>
-        </el-form-item>
+<!--        <el-form-item prop="score" label="学分">-->
+<!--          <el-input v-model="form.score" autocomplete="off" :disabled="user.role!=='ADMIN'"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item prop="num" label="上课人数">
           <el-input v-model="form.num" autocomplete="off" :disabled="user.role!=='ADMIN'"></el-input>
         </el-form-item>
@@ -103,6 +104,19 @@
             <el-option label="已结课" value="已结课"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="课程阶段" prop="phase">
+          <el-select v-model="form.phase" placeholder="请选择阶段" style="width: 100%">
+            <el-option label="项目启动阶段" value="项目启动阶段"></el-option>
+            <el-option label="计划阶段" value="计划阶段"></el-option>
+            <el-option label="需求阶段" value="需求阶段"></el-option>
+            <el-option label="设计阶段" value="设计阶段"></el-option>
+            <el-option label="实施阶段" value="实施阶段"></el-option>
+            <el-option label="测试阶段" value="测试阶段"></el-option>
+            <el-option label="审查阶段" value="审查阶段"></el-option>
+            <el-option label="项目完成" value="项目完成"></el-option>
+          </el-select>
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="fromVisible = false">取 消</el-button>

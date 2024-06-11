@@ -24,6 +24,16 @@ public class Choice implements Serializable {
     private String week;
     private String segment;
     private String status;
+    private String phase;
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
     private String teacherName;
     private String studentName;
 

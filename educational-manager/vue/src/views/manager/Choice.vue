@@ -5,15 +5,16 @@
         <el-table-column type="selection" width="55" align="center" v-if="user.role === 'ADMIN'"></el-table-column>
         <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
         <el-table-column prop="name" label="课程名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="type" label="课程类型" show-overflow-tooltip></el-table-column>
+<!--        <el-table-column prop="type" label="课程类型" show-overflow-tooltip></el-table-column>-->
         <el-table-column prop="teacherName" label="授课教师" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="score" label="学分" show-overflow-tooltip></el-table-column>
+<!--        <el-table-column prop="score" label="学分" show-overflow-tooltip></el-table-column>-->
         <el-table-column prop="num" label="上课人数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="room" label="上课教室" show-overflow-tooltip></el-table-column>
         <el-table-column prop="week" label="周几" show-overflow-tooltip></el-table-column>
         <el-table-column prop="segment" label="第几大节" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="上课状态" show-overflow-tooltip></el-table-column>
         <el-table-column prop="studentName" label="选课学生" show-overflow-tooltip v-if="user.role !== 'STUDENT'"></el-table-column>
+        <el-table-column prop="phase" label="项目阶段" show-overflow-tooltip></el-table-column>
 
         <el-table-column label="操作" width="180" align="center" v-if="user.role === 'STUDENT'">
           <template v-slot="scope">

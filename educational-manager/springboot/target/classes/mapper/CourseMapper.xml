@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.CourseMapper">
 
     <sql id="Base_Column_List">
-        id,name,type,teacher_id,score,num,room,week,segment,status
+        id,name,type,teacher_id,score,num,room,week,segment,status,phase
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Course">
@@ -45,6 +45,7 @@
             <if test="week != null">week,</if>
             <if test="segment != null">segment,</if>
             <if test="status != null">status,</if>
+            <if test="phase != null">phase,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -57,6 +58,7 @@
             <if test="week != null">#{week},</if>
             <if test="segment != null">#{segment},</if>
             <if test="status != null">#{status},</if>
+            <if test="phase != null">#{phase},</if>
         </trim>
     </insert>
 
@@ -89,6 +91,9 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="phase != null">
+                phase = #{phase},
             </if>
         </set>
         where id = #{id}

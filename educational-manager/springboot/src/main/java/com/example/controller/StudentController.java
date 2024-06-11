@@ -84,4 +84,9 @@ public class StudentController {
         return Result.success(page);
     }
 
+    @GetMapping("/getAllHeaders")
+    public Result getAllHeaders() {
+        List<Student> headers = studentService.getAllHeaders();
+        return Result.success(headers);
+    }
 }

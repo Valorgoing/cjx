@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 /**
  * 学生
-*/
+ */
 
 public class Student extends Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /** ID */
+    /**
+     * ID
+     */
     private Integer id;
     private String username;
     private String password;
@@ -24,6 +26,25 @@ public class Student extends Account implements Serializable {
     private String collegeName;
     private String specialityName;
     private String className;
+    private String level;
+    private Integer departmentId;
+    private String departmentName;
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     @Override
     public Integer getId() {
@@ -139,5 +160,13 @@ public class Student extends Account implements Serializable {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }
