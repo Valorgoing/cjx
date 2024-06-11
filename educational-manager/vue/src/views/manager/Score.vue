@@ -2,7 +2,7 @@
   <div>
     <div class="search">
       <el-select v-model="courseId" placeholder="请选择课程" style="width: 200px">
-        <el-option v-for="item in courseData" :label="item.name" :value="item.id"></el-option>
+        <el-option v-for="item in courseData" :label="item.name" :value="item.id" :key="item.id"></el-option>
 <!--        <el-option v-for="item in courseData" :key="item.id" :label="item.name" :value="item.value"></el-option>-->
       </el-select>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
@@ -21,12 +21,19 @@
         <el-table-column prop="studentName" label="学生姓名" show-overflow-tooltip></el-table-column>
         <el-table-column prop="courseName" label="课程名称" show-overflow-tooltip></el-table-column>
         <el-table-column prop="teacherName" label="授课教师" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="ordinaryScore" label="平时分" show-overflow-tooltip></el-table-column>
+<!--        <el-table-column prop="ordinaryScore" label="平时分" show-overflow-tooltip></el-table-column>-->
+        <el-table-column prop="ordinaryScore1" label="平时分1" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="ordinaryScore2" label="平时分2" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="ordinaryScore3" label="平时分3" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="ordinaryScore4" label="平时分4" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="ordinaryScore5" label="平时分5" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="ordinaryScore6" label="平时分6" show-overflow-tooltip></el-table-column>
         <el-table-column prop="examScore" label="期末分" show-overflow-tooltip></el-table-column>
         <el-table-column prop="score" label="总成绩" show-overflow-tooltip></el-table-column>
 
         <el-table-column label="操作" width="180" align="center" v-if="user.role === 'TEACHER'">
           <template v-slot="scope">
+            <el-button plain type="info" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button plain type="danger" size="mini" @click=del(scope.row.id)>删除</el-button>
           </template>
         </el-table-column>
@@ -60,8 +67,26 @@
 <!--            <el-option v-for="item in studentData" :label="item.studentName" :value="item.value" :key="item.studentId"></el-option>-->
           </el-select>
         </el-form-item>
-        <el-form-item prop="ordinaryScore" label="平时分">
-          <el-input v-model="form.ordinaryScore" autocomplete="off"></el-input>
+<!--        <el-form-item prop="ordinaryScore" label="平时分">-->
+<!--          <el-input v-model="form.ordinaryScore" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+        <el-form-item label="平时分1">
+          <el-input v-model="form.ordinaryScore1" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="平时分2">
+          <el-input v-model="form.ordinaryScore2" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="平时分3">
+          <el-input v-model="form.ordinaryScore3" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="平时分4">
+          <el-input v-model="form.ordinaryScore4" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="平时分5">
+          <el-input v-model="form.ordinaryScore5" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="平时分6">
+          <el-input v-model="form.ordinaryScore6" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="examScore" label="期末分">
           <el-input v-model="form.examScore" autocomplete="off"></el-input>
@@ -91,12 +116,7 @@ export default {
       form: {},
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
-        ordinaryScore: [
-          {required: true, message: '请输入平时分', trigger: 'blur'},
-        ],
-        examScore: [
-          {required: true, message: '请输入期末分', trigger: 'blur'},
-        ],
+
       },
       ids: [],
       courseData: [],

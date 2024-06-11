@@ -235,13 +235,13 @@ export default {
     },
     mockData() {
       this.mockedTableData = [
-        {
-          id: 1,
-          studentName: "学生1",
-          content: "申请说明内容1",
-          status: "待审核",
-          descr: "审核说明1"
-        },
+        // {
+        //   id: 1,
+        //   studentName: "学生1",
+        //   content: "申请说明内容1",
+        //   status: "待审核",
+        //   descr: "审核说明1"
+        // },
         {
           id: 2,
           studentName: "kk",
@@ -249,41 +249,41 @@ export default {
           status: "审核通过",
           descr: "kk"
         },
-        {
-          id: 3,
-          studentName: "tt",
-          content: "tt",
-          status: "审核不通过",
-          descr: "tt"
-        },
-        {
-          id: 4,
-          studentName: "学生4",
-          content: "申请说明内容4",
-          status: "待审核",
-          descr: "审核说明4"
-        },
-        {
-          id: 5,
-          studentName: "李",
-          content: "申请质量经理",
-          status: "审核通过",
-          descr: "审核说明5"
-        },
-        {
-          id: 5,
-          studentName: "nn",
-          content: "申请计划经理",
-          status: "审核通过",
-          descr: "不错"
-        },
-        {
-          id: 5,
-          studentName: "opo",
-          content: "申请产品经理",
-          status: "审核通过",
-          descr: "棒"
-        }
+        // {
+        //   id: 3,
+        //   studentName: "tt",
+        //   content: "tt",
+        //   status: "审核不通过",
+        //   descr: "tt"
+        // },
+        // {
+        //   id: 4,
+        //   studentName: "学生4",
+        //   content: "申请说明内容4",
+        //   status: "待审核",
+        //   descr: "审核说明4"
+        // },
+        // {
+        //   id: 5,
+        //   studentName: "李",
+        //   content: "申请质量经理",
+        //   status: "审核通过",
+        //   descr: "审核说明5"
+        // },
+        // {
+        //   id: 5,
+        //   studentName: "nn",
+        //   content: "申请计划经理",
+        //   status: "审核通过",
+        //   descr: "不错"
+        // },
+        // {
+        //   id: 5,
+        //   studentName: "opo",
+        //   content: "申请产品经理",
+        //   status: "审核通过",
+        //   descr: "棒"
+        // }
       ];
       this.load(1);
     }

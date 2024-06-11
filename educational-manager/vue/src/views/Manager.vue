@@ -179,7 +179,6 @@
               <i class="el-icon-menu"></i><span>学生选课模块</span>
             </template>
             <el-menu-item index="/course">课程信息</el-menu-item>
-<!--            <el-menu-item index="/myCourse">我的课程</el-menu-item>-->
             <el-menu-item index="/curriculum">我的课表</el-menu-item>
             <el-menu-item index="/choice">我的选课</el-menu-item>
           </el-submenu>
@@ -189,21 +188,19 @@
             </template>
             <el-menu-item index="/department">学生组队</el-menu-item>
             <el-menu-item index="/group">成员管理</el-menu-item>
-            <el-menu-item index="/member">组队审批</el-menu-item>
+            <el-menu-item index="/member" v-if="user.id === 1">组队审批</el-menu-item>
+            <el-menu-item index="/kk" v-if="user.id !== 1">我的申请</el-menu-item>
           </el-submenu>
           <el-submenu index="thing" v-if="user.role === 'STUDENT'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>组队管理模块</span>
             </template>
-<!--            <el-menu-item index="/attendance">我的考勤</el-menu-item>-->
-<!--            <el-menu-item index="/apply">我的请假</el-menu-item>-->
             <el-menu-item index="/data">课程资料</el-menu-item>
             <el-menu-item index="/test">课程任务</el-menu-item>
             <el-menu-item index="/homework">作业提交</el-menu-item>
             <el-menu-item index="/work">组内任务分配</el-menu-item>
             <el-menu-item index="/teamwork">组内任务提交</el-menu-item>
             <el-menu-item index="/score">我的成绩</el-menu-item>
-<!--            <el-menu-item index="/comment">网上评教</el-menu-item>-->
             <el-menu-item index="/chatroom">小组讨论</el-menu-item>
             <el-menu-item index="/chatroom">私信交流</el-menu-item>
           </el-submenu>
@@ -220,18 +217,11 @@
               <i class="el-icon-menu"></i><span>学生组队模块</span>
             </template>
             <el-menu-item index="/department">队伍管理</el-menu-item>
-
-<!--            <el-menu-item index="/homework">作业管理</el-menu-item>-->
-<!--            <el-menu-item index="/data">课程资料</el-menu-item>-->
-<!--            <el-menu-item index="/comment">评教管理</el-menu-item>-->
-<!--            <el-menu-item index="/chatroom">聊天室</el-menu-item>-->
-<!--            <el-menu-item index="/score">成绩管理</el-menu-item>-->
           </el-submenu>
           <el-submenu index="student" v-if="user.role === 'TEACHER'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>课程运行管理模块</span>
             </template>
-<!--            <el-menu-item index="/group">小组成员管理</el-menu-item>-->
             <el-menu-item index="/course">课程阶段</el-menu-item>
             <el-menu-item index="/notice">课程公告</el-menu-item>
             <el-menu-item index="/examPlan">考试安排</el-menu-item>
@@ -241,20 +231,6 @@
             <el-menu-item index="/score">成绩管理</el-menu-item>
             <el-menu-item index="/chatroom">私信交流</el-menu-item>
           </el-submenu>
-<!--          <el-submenu index="commute" v-if="user.role === 'TEACHER'">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-menu"></i><span>互动与沟通</span>-->
-<!--            </template>-->
-<!--            <el-menu-item index="/notice">公告信息</el-menu-item>-->
-<!--          </el-submenu>-->
-<!--          <el-submenu index="attendance" v-if="user.role === 'TEACHER'">-->
-<!--            <template slot="title">-->
-<!--              <i class="el-icon-menu"></i><span>请假审批与考勤</span>-->
-<!--            </template>-->
-<!--            <el-menu-item index="/attendance">考勤记录</el-menu-item>-->
-<!--            <el-menu-item index="/apply">请假审批</el-menu-item>-->
-<!--          </el-submenu>-->
-
         </el-menu>
       </div>
 

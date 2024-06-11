@@ -39,18 +39,8 @@ public class ScoreService {
         if (ObjectUtil.isNotEmpty(dbScore)) {
             throw new CustomException(ResultCodeEnum.SCORE_ALREADY_ERROR);
         }
-        // 计算一下总成绩
-        double total = score.getOrdinaryScore() * 0.3 + score.getExamScore() * 0.7;
-        score.setScore(total);
+        updateTotalScore(score);
         scoreMapper.insert(score);
-
-        // 录入之后，及格的学生需要获取对应的学分
-        if (total >= 60) {
-            Course course = courseMapper.selectById(score.getCourseId());
-            Student student = studentMapper.selectById(score.getStudentId());
-            student.setScore(student.getScore() + course.getScore());
-            studentMapper.updateById(student);
-        }
     }
 
     /**
@@ -79,9 +69,41 @@ public class ScoreService {
      * 修改
      */
     public void updateById(Score score) {
+        updateTotalScore(score);
         scoreMapper.updateById(score);
     }
+    private void updateTotalScore(Score score) {
+        if (areAllScoresPresent(score)) {
+            double total = calculateTotalScore(score);
+            score.setScore(total);
+            if (total >= 60) {
+                updateStudentScore(score);
+            }
+        } else {
+            score.setScore(null); // 如果分数不完整，设置总成绩为null
+        }
+    }
 
+    private boolean areAllScoresPresent(Score score) {
+        return score.getOrdinaryScore1() != null && score.getOrdinaryScore2() != null &&
+                score.getOrdinaryScore3() != null && score.getOrdinaryScore4() != null &&
+                score.getOrdinaryScore5() != null && score.getOrdinaryScore6() != null &&
+                score.getExamScore() != null;
+    }
+
+    private double calculateTotalScore(Score score) {
+        return (score.getOrdinaryScore1() + score.getOrdinaryScore2() +
+                score.getOrdinaryScore3() + score.getOrdinaryScore4() +
+                score.getOrdinaryScore5() + score.getOrdinaryScore6()) / 6 * 0.3 +
+                score.getExamScore() * 0.7;
+    }
+
+    private void updateStudentScore(Score score) {
+        Course course = courseMapper.selectById(score.getCourseId());
+        Student student = studentMapper.selectById(score.getStudentId());
+        student.setScore(student.getScore() + course.getScore());
+        studentMapper.updateById(student);
+    }
     /**
      * 根据ID查询
      */

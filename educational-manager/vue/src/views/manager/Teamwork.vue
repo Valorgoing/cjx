@@ -101,7 +101,7 @@ export default {
   created() {
     this.load(1)
     this.loadCourse()
-    this.loadDepartmentWork(this.user.departmentId)  // 加载小组作业
+    // this.loadDepartmentWork(this.user.departmentId)  // 加载小组作业
   },
   methods: {
     loadCourse() {
@@ -116,7 +116,7 @@ export default {
     handleAdd() {
       this.form = {
         studentId: this.user.id,
-        departmentId: this.user.departmentId || 0,  // 新增departmentId字段
+        // departmentId: this.user.departmentId || 0,  // 新增departmentId字段
       }
       this.fromVisible = true
     },
@@ -171,19 +171,19 @@ export default {
         this.total = res.data?.total
       })
     },
-    loadDepartmentWork(departmentId) {  // 加载小组报告
-      if (departmentId) {
-        this.$request.get(`/teamwork/selectByDepartmentId/${departmentId}`).then(res => {
-          if (res.code === '200') {
-            this.tableData = res.data
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
-      } else {
-        // this.$message.error('请先选择一个小组')
-      }
-    },
+    // loadDepartmentWork(departmentId) {  // 加载小组报告
+    //   if (departmentId) {
+    //     this.$request.get(`/teamwork/selectByDepartmentId/${departmentId}`).then(res => {
+    //       if (res.code === '200') {
+    //         this.tableData = res.data
+    //       } else {
+    //         this.$message.error(res.msg)
+    //       }
+    //     })
+    //   } else {
+    //     // this.$message.error('请先选择一个小组')
+    //   }
+    // },
     reset() {
       this.content = null
       this.load(1)

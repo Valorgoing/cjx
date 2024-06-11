@@ -48,7 +48,8 @@ const routes = [
       { path: 'logs', name: 'Logs', meta: { name: '日志管理' }, component: () => import('../views/manager/Logs') },
       { path: 'chatroom', name: 'Chatroom', meta: { name: '聊天室' }, component: () => import('../views/manager/Chatroom') },
       { path: 'test', name: 'Test', meta: { name: 'test' }, component: () => import('../views/manager/Test') },
-      { path: 'member', name: 'Member', meta: { name: '小组成员' }, component: () => import('../views/manager/Member') },
+      { path: 'member', name: 'Member', meta: { name: '组队审批' }, component: () => import('../views/manager/Member') },
+      { path: 'kk', name: 'Kk', meta: { name: '组队审批' }, component: () => import('../views/manager/kk.vue') },
       { path: 'bpply', name: 'Bpply', meta: { name: '申请审批' }, component: () => import('../views/manager/Bpply') },
       { path: 'data', name: 'Data', meta: { name: '课程资料' }, component: () => import('../views/manager/Data') },
     ]

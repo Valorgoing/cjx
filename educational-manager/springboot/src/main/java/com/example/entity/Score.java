@@ -8,12 +8,21 @@ import java.io.Serializable;
 public class Score implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /** ID */
+    /**
+     * ID
+     */
     private Integer id;
     private Integer studentId;
     private Integer courseId;
     private Integer teacherId;
-    private Double ordinaryScore;
+    //    private Double ordinaryScore;
+    private Double ordinaryScore1;
+    private Double ordinaryScore2;
+    private Double ordinaryScore3;
+    private Double ordinaryScore4;
+    private Double ordinaryScore5;
+    private Double ordinaryScore6;
+
     private Double examScore;
     private Double score;
 
@@ -53,12 +62,60 @@ public class Score implements Serializable {
         this.teacherId = teacherId;
     }
 
-    public Double getOrdinaryScore() {
-        return ordinaryScore;
+//    public Double getOrdinaryScore() {
+//        return ordinaryScore;
+//    }
+//
+//    public void setOrdinaryScore(Double ordinaryScore) {
+//        this.ordinaryScore = ordinaryScore;
+//    }
+
+    public Double getOrdinaryScore1() {
+        return ordinaryScore1;
     }
 
-    public void setOrdinaryScore(Double ordinaryScore) {
-        this.ordinaryScore = ordinaryScore;
+    public void setOrdinaryScore1(Double ordinaryScore1) {
+        this.ordinaryScore1 = ordinaryScore1;
+    }
+
+    public Double getOrdinaryScore2() {
+        return ordinaryScore2;
+    }
+
+    public void setOrdinaryScore2(Double ordinaryScore2) {
+        this.ordinaryScore2 = ordinaryScore2;
+    }
+
+    public Double getOrdinaryScore3() {
+        return ordinaryScore3;
+    }
+
+    public void setOrdinaryScore3(Double ordinaryScore3) {
+        this.ordinaryScore3 = ordinaryScore3;
+    }
+
+    public Double getOrdinaryScore4() {
+        return ordinaryScore4;
+    }
+
+    public void setOrdinaryScore4(Double ordinaryScore4) {
+        this.ordinaryScore4 = ordinaryScore4;
+    }
+
+    public Double getOrdinaryScore5() {
+        return ordinaryScore5;
+    }
+
+    public void setOrdinaryScore5(Double ordinaryScore5) {
+        this.ordinaryScore5 = ordinaryScore5;
+    }
+
+    public Double getOrdinaryScore6() {
+        return ordinaryScore6;
+    }
+
+    public void setOrdinaryScore6(Double ordinaryScore6) {
+        this.ordinaryScore6 = ordinaryScore6;
     }
 
     public Double getExamScore() {
@@ -70,7 +127,7 @@ public class Score implements Serializable {
     }
 
     public Double getScore() {
-        return score;
+        return score == null ? 0.0 : score;
     }
 
     public void setScore(Double score) {

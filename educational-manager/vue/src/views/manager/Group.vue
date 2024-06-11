@@ -102,6 +102,27 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="申请经理" :visible.sync="applyVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+      <el-form :model="applyForm" label-width="100px" style="padding-right: 50px" ref="applyFormRef">
+        <el-form-item label="申请角色" prop="roleId">
+          <el-select v-model="applyForm.roleId" placeholder="请选择角色" style="width: 100%">
+            <el-option label="开发经理" value="开发经理"></el-option>
+            <el-option label="计划经理" value="计划经理"></el-option>
+            <el-option label="测试经理" value="测试经理"></el-option>
+            <el-option label="组长" value="组长"></el-option>
+            <el-option label="质量经理" value="质量经理"></el-option>
+            <el-option label="产品经理" value="产品经理"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="申请理由" prop="reason">
+          <el-input type="textarea" v-model="applyForm.reason" placeholder="请输入申请理由"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="applyVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitApply">确 定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -117,7 +138,9 @@ export default {
       total: 0,
       username: null,
       fromVisible: false,
+      applyVisible: false,
       form: {},
+      applyForm: {},
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
         username: [
@@ -304,6 +327,22 @@ export default {
       // 把头像属性换成上传的图片的链接
       this.form.avatar = response.data
     },
+    applyRole() {
+      this.applyForm = {
+        roleId: '',
+        reason: ''
+      };
+      this.applyVisible = true;
+    },
+    submitApply() {
+      this.$refs.applyFormRef.validate((valid) => {
+        if (valid) {
+          // 提交申请逻辑
+          this.$message.success('申请发送成功，待审核');
+          this.applyVisible = false;
+        }
+      });
+    }
   }
 }
 </script>
